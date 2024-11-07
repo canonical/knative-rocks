@@ -2,7 +2,9 @@
 
 ## Supported Versions
 
-The Charmed Kubeflow project releases with a cadence of ~6 months, supports the latest two minor versions of Kubeflow, and keeps up to date with the upstream project. Whenever a new version of Kubeflow is released, a new version of Charmed Kubeflow is also released, and the oldest version is dropped from support. Please also to [Supported versions](https://charmed-kubeflow.io/docs/supported-versions) for details on the actual versions.
+The Charmed Kubeflow project releases with a cadence of ~6 months, supports the latest two minor versions of Kubeflow, and keeps up to date with the upstream project. Whenever a new version of Kubeflow is released, a new version of Charmed Kubeflow is also released, and the oldest version is dropped from support. Please also refer to [Supported versions](https://charmed-kubeflow.io/docs/supported-versions) for details on the actual versions.
+
+Since this repository contains rocks used by the Charmed Kubeflow project, the same policy is expected for the rocks and oci-images generated from them (i.e. 1.9-xxxxx).
 
 ## Reporting a Vulnerability
 

@@ -1,0 +1,53 @@
+# From (ko image): https://github.com/knative-extensions/net-istio/tree/release-1.12
+name: net-istio-controller
+base: ubuntu@22.04
+version: v1.12.3
+summary: An image for Knative's net-istio-controller
+description: |
+  An image for Knative's net-istio-controller
+license: Apache-2.0
+entrypoint-service: net-istio-controller
+run-user: _daemon_
+
+platforms:
+  amd64:
+
+services:
+  net-istio-controller:
+    override: replace
+    command: "/ko-app/controller [ ]"
+    startup: enabled
+    user: ubuntu
+
+parts:
+  security-team-requirement:
+    plugin: nil
+    override-build: |
+      mkdir -p ${CRAFT_PART_INSTALL}/usr/share/rocks
+      (echo "# os-release" && cat /etc/os-release && echo "# dpkg-query" && \
+      dpkg-query --root=${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/ -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W) \
+      > ${CRAFT_PART_INSTALL}/usr/share/rocks/dpkg.query
+
+  net-istio-controller:
+    plugin: go
+    build-snaps:
+      - go/1.21/stable
+    source: https://github.com/knative-extensions/net-istio.git
+    source-tag: release-1.12
+    build-environment:
+      - CGO_ENABLED: 0
+      - GOOS: linux
+    override-build: |
+      cd cmd/controller
+      mkdir $CRAFT_PART_INSTALL/ko-app
+      go build -o $CRAFT_PART_INSTALL/ko-app/controller -a .
+  
+  non-root-user:
+    plugin: nil
+    after: [ net-istio-controller ]
+    overlay-script: |
+      # Create a user in the $CRAFT_OVERLAY chroot
+      groupadd -R $CRAFT_OVERLAY -g 1001 ubuntu
+      useradd -R $CRAFT_OVERLAY -M -r -u 1001 -g ubuntu ubuntu
+    override-prime: |
+      craftctl default

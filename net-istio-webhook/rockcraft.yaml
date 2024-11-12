@@ -1,7 +1,7 @@
 # From (ko image): https://github.com/knative-extensions/net-istio/tree/release-1.12
 name: net-istio-webhook
 base: ubuntu@22.04
-version: v1.12.0
+version: v1.12.3
 summary: An image for Knative's net-istio-webhook
 description: |
   An image for Knative's net-istio-webhook

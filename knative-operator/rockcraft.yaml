@@ -8,9 +8,10 @@ platforms:
     amd64:
 run-user: _daemon_
 
+# Required due to the go codebase relying on the OS Env being set
+# See https://github.com/knative/operator/blob/knative-v1.12.4/pkg/reconciler/common/releases.go#L36
 environment:
   KO_DATA_PATH: "/var/run/ko"
-  SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
 
 services:
   knative-operator:
@@ -39,6 +40,10 @@ parts:
       - CGO_ENABLED: 0
       - GOOS: linux
     stage-packages:
+    # Install packages existing in the base for the upstream image.
+    # Base image is set upstream in https://github.com/knative/operator/blob/knative-v1.12.4/.ko.yaml#L1.
+    # Packages existing in the base image are documented
+    # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
       - ca-certificates
       - tzdata
     override-build: |

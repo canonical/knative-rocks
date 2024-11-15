@@ -33,7 +33,7 @@ parts:
     build-snaps:
       - go/1.21/stable
     source: https://github.com/knative-extensions/net-istio.git
-    source-tag: release-1.12
+    source-tag: knative-v1.12.3
     build-environment:
       - CGO_ENABLED: 0
       - GOOS: linux

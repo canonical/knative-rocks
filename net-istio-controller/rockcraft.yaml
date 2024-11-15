@@ -2,9 +2,9 @@
 name: net-istio-controller
 base: ubuntu@22.04
 version: v1.12.3
-summary: An image for Knative's net-istio-controller
+summary: An image for Knative's net-istio controller
 description: |
-  An image for Knative's net-istio-controller
+  An image for Knative's net-istio controller
 license: Apache-2.0
 entrypoint-service: net-istio-controller
 run-user: _daemon_

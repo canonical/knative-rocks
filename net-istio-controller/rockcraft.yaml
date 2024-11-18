@@ -60,7 +60,6 @@ parts:
       - GOOS: linux
     stage-packages:
       # Install the packages existing in the base for the upstream image
-      - ca-certificates
       - netbase
       - tzdata
     override-build: |

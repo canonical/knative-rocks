@@ -45,6 +45,7 @@ parts:
     # Packages existing in the base image are documented
     # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
       - ca-certificates
+      - netbase
       - tzdata
     override-build: |
 

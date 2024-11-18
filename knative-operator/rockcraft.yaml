@@ -55,7 +55,7 @@ parts:
       go build -a -o operator ./cmd/operator
 
       # Copy the files from the ko-data directory to the install directory
-      mkdir -p $CRAFT_PART_INSTALL/var/run/kodata
+      mkdir -p $CRAFT_PART_INSTALL/var/run/ko
       cp -r $CRAFT_PART_SRC/cmd/operator/kodata/. $CRAFT_PART_INSTALL/var/run/ko
 
       # Copy the go binary to the install directory

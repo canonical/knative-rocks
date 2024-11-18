@@ -51,7 +51,7 @@ parts:
       go build -o $CRAFT_PART_INSTALL/ko-app/controller -a .
 
       # Copy the files from the ko-data directory to the install directory
-      mkdir -p $CRAFT_PART_INSTALL/var/run/kodata
+      mkdir -p $CRAFT_PART_INSTALL/var/run/ko
       cp -r $CRAFT_PART_SRC/cmd/controller/kodata/. $CRAFT_PART_INSTALL/var/run/ko
   
   non-root-user:

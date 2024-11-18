@@ -12,6 +12,9 @@ run-user: _daemon_
 platforms:
   amd64:
 
+environment:
+  KO_DATA_PATH: "/var/run/ko"
+    
 services:
   net-istio-controller:
     override: replace
@@ -38,10 +41,19 @@ parts:
     build-environment:
       - CGO_ENABLED: 0
       - GOOS: linux
+    stage-packages:
+      # Install the packages existing in the base for the upstream image
+      - ca-certificates
+      - netbase
+      - tzdata
     override-build: |
       cd cmd/controller
       mkdir $CRAFT_PART_INSTALL/ko-app
       go build -o $CRAFT_PART_INSTALL/ko-app/controller -a .
+
+      # Copy the files from the ko-data directory to the install directory
+      mkdir -p $CRAFT_PART_INSTALL/var/run/kodata
+      cp -r $CRAFT_PART_SRC/cmd/controller/kodata/. $CRAFT_PART_INSTALL/var/run/ko
   
   non-root-user:
     plugin: nil

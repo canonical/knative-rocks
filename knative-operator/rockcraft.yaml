@@ -36,6 +36,11 @@ parts:
     source: https://github.com/knative/operator
     source-type: git
     source-tag: knative-v1.12.4
+    overlay-packages:
+    # Install ca-certificates found in the base image
+    # reference: https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md?plain=1#L9.
+    # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
+      - ca-certificates
     build-snaps:
       - go/1.19/stable
     build-environment:
@@ -48,11 +53,6 @@ parts:
     # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
       - netbase
       - tzdata
-    overlay-packages:
-    # Install ca-certificates found in the base image
-    # reference: https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md?plain=1#L9.
-    # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
-      - ca-certificates
     override-build: |
 
       go mod download

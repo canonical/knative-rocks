@@ -8,10 +8,12 @@ platforms:
     amd64:
 run-user: _daemon_
 
-# Required due to the go codebase relying on the OS Env being set
-# See https://github.com/knative/operator/blob/knative-v1.12.4/pkg/reconciler/common/releases.go#L36
 environment:
+  # Required due to the go codebase relying on the OS Env being set
+  # See https://github.com/knative/operator/blob/knative-v1.12.4/pkg/reconciler/common/releases.go#L36
   KO_DATA_PATH: "/var/run/ko"
+  # env identifies where to locate the SSL certificate file
+  SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
 
 services:
   knative-operator:
@@ -44,9 +46,13 @@ parts:
     # Base image is set upstream in https://github.com/knative/operator/blob/knative-v1.12.4/.ko.yaml#L1.
     # Packages existing in the base image are documented
     # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
-      - ca-certificates
       - netbase
       - tzdata
+    overlay-packages:
+    # Install ca-certificates found in the base image
+    # reference: https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md?plain=1#L9.
+    # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
+      - ca-certificates
     override-build: |
 
       go mod download

@@ -58,6 +58,9 @@ parts:
     build-environment:
       - CGO_ENABLED: 0
       - GOOS: linux
+    overlay-packages:
+      # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
+      - ca-certificates
     stage-packages:
       # Install the packages existing in the base for the upstream image
       - netbase

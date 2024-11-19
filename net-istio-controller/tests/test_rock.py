@@ -43,3 +43,17 @@ def test_rock():
         ],
         check=True,
     )
+
+    subprocess.run(
+        [
+            "docker",
+            "run",
+            "--rm",
+            "--entrypoint",
+            "/bin/bash",
+            LOCAL_ROCK_IMAGE,
+            "-c",
+            "ls -la /etc/ssl/certs/ca-certificates.crt",
+        ],
+        check=True,
+    )

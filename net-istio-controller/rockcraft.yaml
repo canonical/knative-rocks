@@ -1,7 +1,7 @@
 # From (ko image): https://github.com/knative-extensions/net-istio/tree/release-1.12/cmd/controller
 name: net-istio-controller
 base: ubuntu@22.04
-version: v1.12.3
+version: 1.12.3
 summary: An image for Knative's net-istio controller
 description: |
   An image for Knative's net-istio controller

@@ -58,6 +58,11 @@ parts:
     build-environment:
       - CGO_ENABLED: 0
       - GOOS: linux
+    stage-packages:
+      # Install the packages existing in the base for the upstream image
+      - ca-certificates
+      - netbase
+      - tzdata
     override-build: |
       cd cmd/controller
       mkdir $CRAFT_PART_INSTALL/ko-app

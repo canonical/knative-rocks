@@ -1,0 +1,69 @@
+name: knative-operator
+summary: Knative operator
+description: "Knative operator"
+version: "1.12.4"
+license: Apache-2.0
+base: ubuntu@22.04
+platforms:
+    amd64:
+run-user: _daemon_
+
+environment:
+  # Required due to the go codebase relying on the OS Env being set
+  # See https://github.com/knative/operator/blob/knative-v1.12.4/pkg/reconciler/common/releases.go#L36
+  KO_DATA_PATH: "/var/run/ko"
+  # env identifies where to locate the SSL certificate file
+  SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+
+services:
+  knative-operator:
+    override: replace
+    summary: "Knative operator service"
+    startup: enabled
+    command: "/ko-app/operator"
+
+parts:
+  security-team-requirement:
+    plugin: nil
+    override-build: |
+      mkdir -p ${CRAFT_PART_INSTALL}/usr/share/rocks
+      (echo "# os-release" && cat /etc/os-release && echo "# dpkg-query" && \
+      dpkg-query --root=${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/ -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W) \
+      > ${CRAFT_PART_INSTALL}/usr/share/rocks/dpkg.query
+
+  operator:
+    plugin: go
+    source: https://github.com/knative/operator
+    source-type: git
+    source-tag: knative-v1.12.4
+    overlay-packages:
+    # Install ca-certificates found in the base image
+    # reference: https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md?plain=1#L9.
+    # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
+      - ca-certificates
+    build-snaps:
+      - go/1.19/stable
+    build-environment:
+      - CGO_ENABLED: 0
+      - GOOS: linux
+    stage-packages:
+    # Install packages existing in the base for the upstream image.
+    # Base image is set upstream in https://github.com/knative/operator/blob/knative-v1.12.4/.ko.yaml#L1.
+    # Packages existing in the base image are documented
+    # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
+      - netbase
+      - tzdata
+    override-build: |
+
+      go mod download
+
+      # Build
+      go build -a -o operator ./cmd/operator
+
+      # Copy the files from the ko-data directory to the install directory
+      mkdir -p $CRAFT_PART_INSTALL/var/run/ko
+      cp -r $CRAFT_PART_SRC/cmd/operator/kodata/. $CRAFT_PART_INSTALL/var/run/ko
+
+      # Copy the go binary to the install directory
+      mkdir $CRAFT_PART_INSTALL/ko-app
+      cp -r operator $CRAFT_PART_INSTALL/ko-app/operator

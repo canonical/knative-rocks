@@ -50,6 +50,13 @@ parts:
       # Install the packages existing in the base for the upstream image
       - netbase
       - tzdata
+    build-snaps:
+      - go/1.21/stable
+    source: https://github.com/knative-extensions/net-istio.git
+    source-tag: release-1.12
+    build-environment:
+      - CGO_ENABLED: 0
+      - GOOS: linux
     override-build: |
       cd cmd/controller
       mkdir $CRAFT_PART_INSTALL/ko-app

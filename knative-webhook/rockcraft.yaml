@@ -1,3 +1,4 @@
+# Based on ko image: https://github.com/knative/operator/tree/knative-v1.12.4/cmd/webhook
 name: knative-webhook
 summary: Knative webhook
 description: "Knative webhook"

@@ -17,7 +17,6 @@ services:
     override: replace
     command: "/ko-app/webhook [ ]"
     startup: enabled
-    user: ubuntu
 
 parts:
   security-team-requirement:
@@ -41,13 +40,3 @@ parts:
       cd cmd/webhook
       mkdir $CRAFT_PART_INSTALL/ko-app
       go build -o $CRAFT_PART_INSTALL/ko-app/webhook -a .
-  
-  non-root-user:
-    plugin: nil
-    after: [ net-istio-webhook ]
-    overlay-script: |
-      # Create a user in the $CRAFT_OVERLAY chroot
-      groupadd -R $CRAFT_OVERLAY -g 1001 ubuntu
-      useradd -R $CRAFT_OVERLAY -M -r -u 1001 -g ubuntu ubuntu
-    override-prime: |
-      craftctl default

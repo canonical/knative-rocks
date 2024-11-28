@@ -18,3 +18,4 @@ jobs:
       microk8s-channel: 1.29-strict/stable
       juju-channel: 3.4/stable
       python-version: "3.8"
+      rockcraft-channel: latest/edge # pinning this until this PR is not in stable https://github.com/canonical/rockcraft/pull/757

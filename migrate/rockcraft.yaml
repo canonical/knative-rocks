@@ -1,0 +1,51 @@
+# From (ko image): https://github.com/knative/pkg/blob/release-1.12/apiextensions/storageversion/cmd/migrate/main.go
+name: migrate
+base: ubuntu@22.04
+version: 1.12.4
+summary: An image for Knative's migrate
+description: |
+  An image for Knative's migrate
+license: Apache-2.0
+entrypoint-service: migrate
+run-user: _daemon_
+
+platforms:
+  amd64:
+
+environment:
+  # Environment variables that are set in the base image
+  KO_DATA_PATH: "/var/run/ko"
+  SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+
+services:
+  migrate:
+    override: replace
+    command: "/ko-app/migrate [ ]"
+    startup: enabled
+
+parts:
+  security-team-requirement:
+    plugin: nil
+    override-build: |
+      mkdir -p ${CRAFT_PART_INSTALL}/usr/share/rocks
+      (echo "# os-release" && cat /etc/os-release && echo "# dpkg-query" && \
+      dpkg-query --root=${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/ -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W) \
+      > ${CRAFT_PART_INSTALL}/usr/share/rocks/dpkg.query
+
+  migrate:
+    plugin: go
+    source: https://github.com/knative/pkg.git
+    source-type: git
+    source-branch: release-1.12
+    overlay-packages:
+      # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
+      - ca-certificates
+    build-snaps:
+      - go/1.21/stable
+    build-environment:
+      - CGO_ENABLED: 0
+      - GOOS: linux
+    override-build: |
+      cd apiextensions/storageversion/cmd/migrate
+      mkdir $CRAFT_PART_INSTALL/ko-app
+      go build -o $CRAFT_PART_INSTALL/ko-app/migrate -a .

@@ -22,7 +22,6 @@ services:
     override: replace
     command: "/ko-app/controller [ ]"
     startup: enabled
-    user: ubuntu
 
 parts:
   security-team-requirement:
@@ -58,11 +57,3 @@ parts:
       # Copy the files from the ko-data directory to the install directory
       mkdir -p $CRAFT_PART_INSTALL/var/run/ko
       cp -r $CRAFT_PART_SRC/cmd/controller/kodata/. $CRAFT_PART_INSTALL/var/run/ko
-  
-  non-root-user:
-    plugin: nil
-    after: [ net-istio-controller ]
-    overlay-script: |
-      # Create a user in the $CRAFT_OVERLAY chroot
-      groupadd -R $CRAFT_OVERLAY -g 1001 ubuntu
-      useradd -R $CRAFT_OVERLAY -M -r -u 1001 -g ubuntu ubuntu

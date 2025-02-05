@@ -1,8 +1,8 @@
-# Based on ko image: https://github.com/knative/operator/tree/knative-v1.12.4/cmd/webhook
+# Based on ko image: https://github.com/knative/operator/tree/knative-v1.16.0/cmd/webhook
 name: knative-webhook
 summary: Knative webhook
 description: "Knative webhook"
-version: "1.12.4"
+version: "1.16.0"
 license: Apache-2.0
 base: ubuntu@22.04
 platforms:
@@ -11,7 +11,7 @@ run-user: _daemon_
 
 environment:
   # Required due to the go codebase relying on the OS Env being set
-  # See https://github.com/knative/operator/blob/knative-v1.12.4/pkg/reconciler/common/releases.go#L36
+  # See https://github.com/knative/operator/blob/knative-v1.16.0/pkg/reconciler/common/releases.go#L36
   KO_DATA_PATH: "/var/run/ko"
   # env identifies where to locate the SSL certificate file
   SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
@@ -36,20 +36,20 @@ parts:
     plugin: go
     source: https://github.com/knative/operator
     source-type: git
-    source-tag: knative-v1.12.4
+    source-tag: knative-v1.16.0
     overlay-packages:
     # Install ca-certificates found in the base image
     # reference: https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md?plain=1#L9.
     # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
       - ca-certificates
     build-snaps:
-      - go/1.19/stable
+      - go/1.22/stable
     build-environment:
       - CGO_ENABLED: 0
       - GOOS: linux
     stage-packages:
     # Install packages existing in the base for the upstream image.
-    # Base image is set upstream in https://github.com/knative/operator/blob/knative-v1.12.4/.ko.yaml#L1.
+    # Base image is set upstream in https://github.com/knative/operator/blob/knative-v1.16.0/.ko.yaml#L1.
     # Packages existing in the base image are documented
     # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
       - netbase

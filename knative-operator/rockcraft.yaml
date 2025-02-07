@@ -31,7 +31,13 @@ parts:
       dpkg-query --root=${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/ -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W) \
       > ${CRAFT_PART_INSTALL}/usr/share/rocks/dpkg.query
 
+  copy-patch:
+    plugin: dump
+    source-type: local
+    source: ./patches
+
   operator:
+    after: [copy-patch]
     plugin: go
     source: https://github.com/knative/operator
     source-type: git
@@ -54,6 +60,12 @@ parts:
       - netbase
       - tzdata
     override-build: |
+      cp \
+        $CRAFT_STAGE/0001-readOnlyRootFilesystem-to-false.patch \
+        .
+
+      ls
+      git apply 0001-readOnlyRootFilesystem-to-false.patch
 
       go mod download
 

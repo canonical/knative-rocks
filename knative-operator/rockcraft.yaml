@@ -35,12 +35,16 @@ parts:
     plugin: dump
     source-type: local
     source: ./patches
+    prime:
+      - -0001-readOnlyRootFilesystem-false.patch
 
   operator:
     after: [copy-patch]
     plugin: go
     source: https://github.com/knative/operator
     source-type: git
+    # If you update the tag, don't forget to update the generated readOnlyRootFilesystem patch
+    # from scripts/
     source-tag: knative-v1.12.4
     overlay-packages:
     # Install ca-certificates found in the base image
@@ -60,13 +64,11 @@ parts:
       - netbase
       - tzdata
     override-build: |
-      cp \
-        $CRAFT_STAGE/0001-readOnlyRootFilesystem-to-false.patch \
-        .
+      # apply the readOnlyRootFilesystem patch
+      cp $CRAFT_STAGE/0001-readOnlyRootFilesystem-false.patch .
+      git apply 0001-readOnlyRootFilesystem-false.patch
 
-      ls
-      git apply 0001-readOnlyRootFilesystem-to-false.patch
-
+      # regular build
       go mod download
 
       # Build

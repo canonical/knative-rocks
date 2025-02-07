@@ -1,0 +1,3797 @@
+From d783ffffb37dc2ca6551164caf440a42d28c543e Mon Sep 17 00:00:00 2001
+From: Kimonas Sotirchos <kimwnasptd@gmail.com>
+Date: Fri, 7 Feb 2025 13:22:45 +0000
+Subject: [PATCH] readOnlyRootFilesystem false
+
+---
+ .../1.13/kafka/eventing-kafka-controller.yaml             | 4 ++--
+ .../1.13/kafka/eventing-kafka-post-install.yaml           | 4 ++--
+ .../eventing-source/1.13/kafka/eventing-kafka-source.yaml | 2 +-
+ .../eventing-source/1.13/rabbitmq/rabbitmq-source.yaml    | 4 ++--
+ .../1.14/kafka/eventing-kafka-controller.yaml             | 4 ++--
+ .../1.14/kafka/eventing-kafka-post-install.yaml           | 4 ++--
+ .../eventing-source/1.14/kafka/eventing-kafka-source.yaml | 2 +-
+ .../eventing-source/1.14/rabbitmq/rabbitmq-source.yaml    | 4 ++--
+ .../1.15/kafka/eventing-kafka-controller.yaml             | 4 ++--
+ .../1.15/kafka/eventing-kafka-post-install.yaml           | 4 ++--
+ .../eventing-source/1.15/kafka/eventing-kafka-source.yaml | 2 +-
+ .../eventing-source/1.15/rabbitmq/rabbitmq-source.yaml    | 4 ++--
+ .../1.16/kafka/eventing-kafka-controller.yaml             | 4 ++--
+ .../1.16/kafka/eventing-kafka-post-install.yaml           | 4 ++--
+ .../eventing-source/1.16/kafka/eventing-kafka-source.yaml | 2 +-
+ .../eventing-source/1.16/rabbitmq/rabbitmq-source.yaml    | 4 ++--
+ cmd/operator/kodata/ingress/1.13/contour/net-contour.yaml | 2 +-
+ cmd/operator/kodata/ingress/1.13/istio/net-istio.yaml     | 2 +-
+ cmd/operator/kodata/ingress/1.13/kourier/kourier.yaml     | 2 +-
+ cmd/operator/kodata/ingress/1.14/contour/net-contour.yaml | 2 +-
+ cmd/operator/kodata/ingress/1.14/istio/net-istio.yaml     | 2 +-
+ cmd/operator/kodata/ingress/1.14/kourier/kourier.yaml     | 2 +-
+ cmd/operator/kodata/ingress/1.15/contour/net-contour.yaml | 2 +-
+ cmd/operator/kodata/ingress/1.15/istio/net-istio.yaml     | 2 +-
+ cmd/operator/kodata/ingress/1.15/kourier/kourier.yaml     | 2 +-
+ cmd/operator/kodata/ingress/1.16/contour/net-contour.yaml | 2 +-
+ cmd/operator/kodata/ingress/1.16/istio/net-istio.yaml     | 2 +-
+ cmd/operator/kodata/ingress/1.16/kourier/kourier.yaml     | 2 +-
+ .../kodata/knative-eventing/1.13.0/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.13.0/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.13.0/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.13.0/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.13.1/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.13.1/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.13.1/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.13.1/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.13.2/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.13.2/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.13.2/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.13.2/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.13.3/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.13.3/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.13.3/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.13.3/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.13.4/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.13.4/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.13.4/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.13.4/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.13.5/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.13.5/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.13.5/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.13.5/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.13.6/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.13.6/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.13.6/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.13.6/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.13.7/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.13.7/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.13.7/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.13.7/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.13.8/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.13.8/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.13.8/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.13.8/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.14.0/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.14.0/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.14.0/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.14.0/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.14.1/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.14.1/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.14.1/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.14.1/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.14.2/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.14.2/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.14.2/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.14.2/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.14.3/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.14.3/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.14.3/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.14.3/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.14.4/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.14.4/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.14.4/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.14.4/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.14.5/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.14.5/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.14.5/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.14.5/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.14.6/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.14.6/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.14.6/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.14.6/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.14.7/2-eventing-core.yaml   | 6 +++---
+ .../knative-eventing/1.14.7/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.14.7/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.14.7/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.15.0/2-eventing-core.yaml   | 8 ++++----
+ .../knative-eventing/1.15.0/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.15.0/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.15.0/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.15.1/2-eventing-core.yaml   | 8 ++++----
+ .../knative-eventing/1.15.1/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.15.1/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.15.1/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.15.2/2-eventing-core.yaml   | 8 ++++----
+ .../knative-eventing/1.15.2/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.15.2/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.15.2/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.15.3/2-eventing-core.yaml   | 8 ++++----
+ .../knative-eventing/1.15.3/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.15.3/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.15.3/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-eventing/1.16.0/2-eventing-core.yaml   | 8 ++++----
+ .../knative-eventing/1.16.0/4-in-memory-channel.yaml      | 4 ++--
+ .../knative-eventing/1.16.0/5-mt-channel-broker.yaml      | 6 +++---
+ .../knative-eventing/1.16.0/6-eventing-post-install.yaml  | 2 +-
+ .../kodata/knative-serving/1.13.0/2-serving-core.yaml     | 8 ++++----
+ .../kodata/knative-serving/1.13.0/3-serving-hpa.yaml      | 2 +-
+ .../1.13.0/4-serving-post-install-jobs.yaml               | 2 +-
+ .../kodata/knative-serving/1.13.1/2-serving-core.yaml     | 8 ++++----
+ .../kodata/knative-serving/1.13.1/3-serving-hpa.yaml      | 2 +-
+ .../1.13.1/4-serving-post-install-jobs.yaml               | 2 +-
+ .../kodata/knative-serving/1.13.2/2-serving-core.yaml     | 8 ++++----
+ .../kodata/knative-serving/1.13.2/3-serving-hpa.yaml      | 2 +-
+ .../1.13.2/4-serving-post-install-jobs.yaml               | 2 +-
+ .../kodata/knative-serving/1.14.0/2-serving-core.yaml     | 8 ++++----
+ .../kodata/knative-serving/1.14.0/3-serving-hpa.yaml      | 2 +-
+ .../1.14.0/4-serving-post-install-jobs.yaml               | 2 +-
+ .../kodata/knative-serving/1.14.1/2-serving-core.yaml     | 8 ++++----
+ .../kodata/knative-serving/1.14.1/3-serving-hpa.yaml      | 2 +-
+ .../1.14.1/4-serving-post-install-jobs.yaml               | 2 +-
+ .../kodata/knative-serving/1.14.2/2-serving-core.yaml     | 8 ++++----
+ .../kodata/knative-serving/1.14.2/3-serving-hpa.yaml      | 2 +-
+ .../1.14.2/4-serving-post-install-jobs.yaml               | 2 +-
+ .../kodata/knative-serving/1.15.0/2-serving-core.yaml     | 8 ++++----
+ .../kodata/knative-serving/1.15.0/3-serving-hpa.yaml      | 2 +-
+ .../1.15.0/4-serving-post-install-jobs.yaml               | 4 ++--
+ .../kodata/knative-serving/1.15.1/2-serving-core.yaml     | 8 ++++----
+ .../kodata/knative-serving/1.15.1/3-serving-hpa.yaml      | 2 +-
+ .../1.15.1/4-serving-post-install-jobs.yaml               | 4 ++--
+ .../kodata/knative-serving/1.15.2/2-serving-core.yaml     | 8 ++++----
+ .../kodata/knative-serving/1.15.2/3-serving-hpa.yaml      | 2 +-
+ .../1.15.2/4-serving-post-install-jobs.yaml               | 4 ++--
+ .../kodata/knative-serving/1.16.0/2-serving-core.yaml     | 8 ++++----
+ .../kodata/knative-serving/1.16.0/3-serving-hpa.yaml      | 2 +-
+ .../1.16.0/4-serving-post-install-jobs.yaml               | 4 ++--
+ config/charts/knative-operator/values.yaml                | 4 ++--
+ config/manager/operator.yaml                              | 2 +-
+ config/webhook/webhook.yaml                               | 2 +-
+ pkg/reconciler/common/testdata/manifest.yaml              | 6 +++---
+ .../testdata/kodata/ingress/1.6/contour/net-contour.yaml  | 2 +-
+ .../testdata/kodata/ingress/1.6/istio/net-istio.yaml      | 2 +-
+ .../testdata/kodata/ingress/1.6/kourier/kourier.yaml      | 2 +-
+ .../testdata/kodata/ingress/1.7/contour/net-contour.yaml  | 2 +-
+ .../testdata/kodata/ingress/1.7/istio/net-istio.yaml      | 2 +-
+ .../testdata/kodata/ingress/1.7/kourier/kourier.yaml      | 2 +-
+ .../testdata/kodata/ingress/1.8/contour/net-contour.yaml  | 2 +-
+ .../testdata/kodata/ingress/1.8/istio/net-istio.yaml      | 2 +-
+ .../testdata/kodata/ingress/1.8/kourier/kourier.yaml      | 2 +-
+ .../testdata/kodata/ingress/1.9/contour/net-contour.yaml  | 2 +-
+ .../testdata/kodata/ingress/1.9/istio/net-istio.yaml      | 2 +-
+ .../testdata/kodata/ingress/1.9/kourier/kourier.yaml      | 2 +-
+ .../testdata/kodata/ingress/1.9/contour/net-contour.yaml  | 2 +-
+ .../testdata/kodata/ingress/1.9/istio/net-istio.yaml      | 2 +-
+ .../testdata/kodata/ingress/1.9/kourier/kourier.yaml      | 2 +-
+ 165 files changed, 329 insertions(+), 329 deletions(-)
+
+diff --git a/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-controller.yaml b/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-controller.yaml
+index 4b4edd8a..05fc179a 100644
+--- a/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-controller.yaml
++++ b/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-controller.yaml
+@@ -2101,7 +2101,7 @@ spec:
+           terminationMessagePath: /dev/temination-log
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+@@ -2472,7 +2472,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+diff --git a/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-post-install.yaml b/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-post-install.yaml
+index 35d2d68d..2cf0187a 100644
+--- a/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-post-install.yaml
++++ b/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-post-install.yaml
+@@ -238,7 +238,7 @@ spec:
+               value: kafka-channel-config
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -294,7 +294,7 @@ spec:
+             - "kafkasinks.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-source.yaml b/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-source.yaml
+index 7869a968..02388b0a 100644
+--- a/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-source.yaml
++++ b/cmd/operator/kodata/eventing-source/1.13/kafka/eventing-kafka-source.yaml
+@@ -392,7 +392,7 @@ spec:
+           terminationMessagePath: /dev/temination-log
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+diff --git a/cmd/operator/kodata/eventing-source/1.13/rabbitmq/rabbitmq-source.yaml b/cmd/operator/kodata/eventing-source/1.13/rabbitmq/rabbitmq-source.yaml
+index af138686..29e4d59f 100644
+--- a/cmd/operator/kodata/eventing-source/1.13/rabbitmq/rabbitmq-source.yaml
++++ b/cmd/operator/kodata/eventing-source/1.13/rabbitmq/rabbitmq-source.yaml
+@@ -642,7 +642,7 @@ spec:
+               value: gcr.io/knative-releases/knative.dev/eventing-rabbitmq/cmd/receive_adapter@sha256:c534319cf18addb9f04bd6bae6debdf4affb14215ecbd9861c8d12cdbbe21a18
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -885,7 +885,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-controller.yaml b/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-controller.yaml
+index 81cbda68..16156052 100644
+--- a/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-controller.yaml
++++ b/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-controller.yaml
+@@ -2179,7 +2179,7 @@ spec:
+           terminationMessagePath: /dev/temination-log
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+@@ -2550,7 +2550,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+diff --git a/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-post-install.yaml b/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-post-install.yaml
+index a9af4568..ed00d700 100644
+--- a/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-post-install.yaml
++++ b/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-post-install.yaml
+@@ -255,7 +255,7 @@ spec:
+               value: kafka-channel-config
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -311,7 +311,7 @@ spec:
+             - "kafkasinks.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-source.yaml b/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-source.yaml
+index efdacb38..0efca278 100644
+--- a/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-source.yaml
++++ b/cmd/operator/kodata/eventing-source/1.14/kafka/eventing-kafka-source.yaml
+@@ -398,7 +398,7 @@ spec:
+           terminationMessagePath: /dev/temination-log
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+diff --git a/cmd/operator/kodata/eventing-source/1.14/rabbitmq/rabbitmq-source.yaml b/cmd/operator/kodata/eventing-source/1.14/rabbitmq/rabbitmq-source.yaml
+index ae500229..adbf4de2 100644
+--- a/cmd/operator/kodata/eventing-source/1.14/rabbitmq/rabbitmq-source.yaml
++++ b/cmd/operator/kodata/eventing-source/1.14/rabbitmq/rabbitmq-source.yaml
+@@ -642,7 +642,7 @@ spec:
+               value: gcr.io/knative-releases/knative.dev/eventing-rabbitmq/cmd/receive_adapter@sha256:ba31b9f37aaab81ffe7de0d6e7ebb76dd21de7448164081140709ae346836a5f
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -885,7 +885,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-controller.yaml b/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-controller.yaml
+index a79294de..23eb9c2c 100644
+--- a/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-controller.yaml
++++ b/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-controller.yaml
+@@ -2181,7 +2181,7 @@ spec:
+           terminationMessagePath: /dev/temination-log
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+@@ -2552,7 +2552,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+diff --git a/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-post-install.yaml b/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-post-install.yaml
+index 2ae35d9c..1a63f4f9 100644
+--- a/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-post-install.yaml
++++ b/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-post-install.yaml
+@@ -255,7 +255,7 @@ spec:
+               value: kafka-channel-config
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -311,7 +311,7 @@ spec:
+             - "kafkasinks.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-source.yaml b/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-source.yaml
+index 64d1a8a9..962c45eb 100644
+--- a/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-source.yaml
++++ b/cmd/operator/kodata/eventing-source/1.15/kafka/eventing-kafka-source.yaml
+@@ -398,7 +398,7 @@ spec:
+           terminationMessagePath: /dev/temination-log
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+diff --git a/cmd/operator/kodata/eventing-source/1.15/rabbitmq/rabbitmq-source.yaml b/cmd/operator/kodata/eventing-source/1.15/rabbitmq/rabbitmq-source.yaml
+index a65ec3fe..0e1d4b4b 100644
+--- a/cmd/operator/kodata/eventing-source/1.15/rabbitmq/rabbitmq-source.yaml
++++ b/cmd/operator/kodata/eventing-source/1.15/rabbitmq/rabbitmq-source.yaml
+@@ -642,7 +642,7 @@ spec:
+               value: gcr.io/knative-releases/knative.dev/eventing-rabbitmq/cmd/receive_adapter@sha256:dd80a0d3ea2df8b8f1140a0348c3086eb18114875695ee577936b98ec5461835
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -885,7 +885,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-controller.yaml b/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-controller.yaml
+index d2008330..b68d38db 100644
+--- a/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-controller.yaml
++++ b/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-controller.yaml
+@@ -2609,7 +2609,7 @@ spec:
+           terminationMessagePath: /dev/temination-log
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+@@ -2984,7 +2984,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+diff --git a/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-post-install.yaml b/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-post-install.yaml
+index 5f7356cb..7182327b 100644
+--- a/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-post-install.yaml
++++ b/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-post-install.yaml
+@@ -239,7 +239,7 @@ spec:
+               value: kafka-channel-config
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -296,7 +296,7 @@ spec:
+             - "kafkasinks.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-source.yaml b/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-source.yaml
+index 8c99e8c1..c52d0cbe 100644
+--- a/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-source.yaml
++++ b/cmd/operator/kodata/eventing-source/1.16/kafka/eventing-kafka-source.yaml
+@@ -398,7 +398,7 @@ spec:
+           terminationMessagePath: /dev/temination-log
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             capabilities:
+               drop:
+                 - ALL
+diff --git a/cmd/operator/kodata/eventing-source/1.16/rabbitmq/rabbitmq-source.yaml b/cmd/operator/kodata/eventing-source/1.16/rabbitmq/rabbitmq-source.yaml
+index 06566293..f3c8fdb2 100644
+--- a/cmd/operator/kodata/eventing-source/1.16/rabbitmq/rabbitmq-source.yaml
++++ b/cmd/operator/kodata/eventing-source/1.16/rabbitmq/rabbitmq-source.yaml
+@@ -642,7 +642,7 @@ spec:
+               value: gcr.io/knative-releases/knative.dev/eventing-rabbitmq/cmd/receive_adapter@sha256:80080f494c76bde146520bb6f909bfbe0281b5dcfa681eccb09c94df9a9e7fe6
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -885,7 +885,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.13/contour/net-contour.yaml b/cmd/operator/kodata/ingress/1.13/contour/net-contour.yaml
+index 3ce5ac66..7871178d 100644
+--- a/cmd/operator/kodata/ingress/1.13/contour/net-contour.yaml
++++ b/cmd/operator/kodata/ingress/1.13/contour/net-contour.yaml
+@@ -140,7 +140,7 @@ spec:
+               containerPort: 8008
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.13/istio/net-istio.yaml b/cmd/operator/kodata/ingress/1.13/istio/net-istio.yaml
+index d16cdc6e..4fc260de 100644
+--- a/cmd/operator/kodata/ingress/1.13/istio/net-istio.yaml
++++ b/cmd/operator/kodata/ingress/1.13/istio/net-istio.yaml
+@@ -302,7 +302,7 @@ spec:
+               value: knative.dev/net-istio
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.13/kourier/kourier.yaml b/cmd/operator/kodata/ingress/1.13/kourier/kourier.yaml
+index de0705da..7b5db2f4 100644
+--- a/cmd/operator/kodata/ingress/1.13/kourier/kourier.yaml
++++ b/cmd/operator/kodata/ingress/1.13/kourier/kourier.yaml
+@@ -378,7 +378,7 @@ spec:
+             failureThreshold: 6
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.14/contour/net-contour.yaml b/cmd/operator/kodata/ingress/1.14/contour/net-contour.yaml
+index 0a390e67..39f1a9f6 100644
+--- a/cmd/operator/kodata/ingress/1.14/contour/net-contour.yaml
++++ b/cmd/operator/kodata/ingress/1.14/contour/net-contour.yaml
+@@ -156,7 +156,7 @@ spec:
+               containerPort: 8008
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.14/istio/net-istio.yaml b/cmd/operator/kodata/ingress/1.14/istio/net-istio.yaml
+index fcb88ab0..e05b8a2c 100644
+--- a/cmd/operator/kodata/ingress/1.14/istio/net-istio.yaml
++++ b/cmd/operator/kodata/ingress/1.14/istio/net-istio.yaml
+@@ -361,7 +361,7 @@ spec:
+               value: knative.dev/net-istio
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.14/kourier/kourier.yaml b/cmd/operator/kodata/ingress/1.14/kourier/kourier.yaml
+index d5dcbfda..e766b94a 100644
+--- a/cmd/operator/kodata/ingress/1.14/kourier/kourier.yaml
++++ b/cmd/operator/kodata/ingress/1.14/kourier/kourier.yaml
+@@ -378,7 +378,7 @@ spec:
+             failureThreshold: 6
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.15/contour/net-contour.yaml b/cmd/operator/kodata/ingress/1.15/contour/net-contour.yaml
+index 48d38390..300b171c 100644
+--- a/cmd/operator/kodata/ingress/1.15/contour/net-contour.yaml
++++ b/cmd/operator/kodata/ingress/1.15/contour/net-contour.yaml
+@@ -156,7 +156,7 @@ spec:
+               containerPort: 8008
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.15/istio/net-istio.yaml b/cmd/operator/kodata/ingress/1.15/istio/net-istio.yaml
+index a7c7d4be..07e2d3dd 100644
+--- a/cmd/operator/kodata/ingress/1.15/istio/net-istio.yaml
++++ b/cmd/operator/kodata/ingress/1.15/istio/net-istio.yaml
+@@ -361,7 +361,7 @@ spec:
+               value: knative.dev/net-istio
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.15/kourier/kourier.yaml b/cmd/operator/kodata/ingress/1.15/kourier/kourier.yaml
+index a61446de..85355bed 100644
+--- a/cmd/operator/kodata/ingress/1.15/kourier/kourier.yaml
++++ b/cmd/operator/kodata/ingress/1.15/kourier/kourier.yaml
+@@ -392,7 +392,7 @@ spec:
+             failureThreshold: 6
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.16/contour/net-contour.yaml b/cmd/operator/kodata/ingress/1.16/contour/net-contour.yaml
+index 046f7316..1125288a 100644
+--- a/cmd/operator/kodata/ingress/1.16/contour/net-contour.yaml
++++ b/cmd/operator/kodata/ingress/1.16/contour/net-contour.yaml
+@@ -156,7 +156,7 @@ spec:
+               containerPort: 8008
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.16/istio/net-istio.yaml b/cmd/operator/kodata/ingress/1.16/istio/net-istio.yaml
+index a7c17763..2695b821 100644
+--- a/cmd/operator/kodata/ingress/1.16/istio/net-istio.yaml
++++ b/cmd/operator/kodata/ingress/1.16/istio/net-istio.yaml
+@@ -360,7 +360,7 @@ spec:
+               value: knative.dev/net-istio
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/ingress/1.16/kourier/kourier.yaml b/cmd/operator/kodata/ingress/1.16/kourier/kourier.yaml
+index 30214f24..f684c76e 100644
+--- a/cmd/operator/kodata/ingress/1.16/kourier/kourier.yaml
++++ b/cmd/operator/kodata/ingress/1.16/kourier/kourier.yaml
+@@ -396,7 +396,7 @@ spec:
+             failureThreshold: 6
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.0/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.13.0/2-eventing-core.yaml
+index cd197c3e..4403f75c 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.0/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.0/2-eventing-core.yaml
+@@ -888,7 +888,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1012,7 +1012,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1168,7 +1168,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.0/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.13.0/4-in-memory-channel.yaml
+index 1a64fc9a..f745da05 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.0/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.0/4-in-memory-channel.yaml
+@@ -374,7 +374,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -564,7 +564,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.0/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.13.0/5-mt-channel-broker.yaml
+index 95dcf926..3e0bc69b 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.0/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.0/5-mt-channel-broker.yaml
+@@ -519,7 +519,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -652,7 +652,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -760,7 +760,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.0/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.13.0/6-eventing-post-install.yaml
+index 2991e482..51090925 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.0/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.0/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.1/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.13.1/2-eventing-core.yaml
+index d79ef018..2ea21c34 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.1/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.1/2-eventing-core.yaml
+@@ -888,7 +888,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1012,7 +1012,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1168,7 +1168,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.1/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.13.1/4-in-memory-channel.yaml
+index fdcc049e..ddea55a6 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.1/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.1/4-in-memory-channel.yaml
+@@ -374,7 +374,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -564,7 +564,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.1/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.13.1/5-mt-channel-broker.yaml
+index 323da9fb..9f77312e 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.1/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.1/5-mt-channel-broker.yaml
+@@ -519,7 +519,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -652,7 +652,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -760,7 +760,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.1/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.13.1/6-eventing-post-install.yaml
+index f7e181a8..937b03f5 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.1/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.1/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.2/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.13.2/2-eventing-core.yaml
+index 3f406a01..34d94a95 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.2/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.2/2-eventing-core.yaml
+@@ -888,7 +888,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1015,7 +1015,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1172,7 +1172,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.2/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.13.2/4-in-memory-channel.yaml
+index 17eae1c6..e9eb4c2d 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.2/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.2/4-in-memory-channel.yaml
+@@ -377,7 +377,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -583,7 +583,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.2/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.13.2/5-mt-channel-broker.yaml
+index 49f862ed..d67c6525 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.2/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.2/5-mt-channel-broker.yaml
+@@ -526,7 +526,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -666,7 +666,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -774,7 +774,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.2/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.13.2/6-eventing-post-install.yaml
+index 3405578b..f1f2affd 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.2/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.2/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.3/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.13.3/2-eventing-core.yaml
+index e7e3c74f..2bb042d6 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.3/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.3/2-eventing-core.yaml
+@@ -888,7 +888,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1015,7 +1015,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1172,7 +1172,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.3/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.13.3/4-in-memory-channel.yaml
+index f2b2754a..3cc01c3b 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.3/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.3/4-in-memory-channel.yaml
+@@ -377,7 +377,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -583,7 +583,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.3/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.13.3/5-mt-channel-broker.yaml
+index 88e6c323..f5d39c6f 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.3/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.3/5-mt-channel-broker.yaml
+@@ -526,7 +526,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -666,7 +666,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -774,7 +774,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.3/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.13.3/6-eventing-post-install.yaml
+index 79bd2605..dcac8c33 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.3/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.3/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.4/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.13.4/2-eventing-core.yaml
+index 1849f81b..9189f9e9 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.4/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.4/2-eventing-core.yaml
+@@ -888,7 +888,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1015,7 +1015,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1172,7 +1172,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.4/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.13.4/4-in-memory-channel.yaml
+index c67e5a60..6988ad34 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.4/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.4/4-in-memory-channel.yaml
+@@ -377,7 +377,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -583,7 +583,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.4/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.13.4/5-mt-channel-broker.yaml
+index 6f57507e..7a930278 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.4/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.4/5-mt-channel-broker.yaml
+@@ -526,7 +526,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -666,7 +666,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -774,7 +774,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.4/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.13.4/6-eventing-post-install.yaml
+index d267081d..73f574bc 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.4/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.4/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.5/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.13.5/2-eventing-core.yaml
+index fb0d46e9..d25472f3 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.5/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.5/2-eventing-core.yaml
+@@ -888,7 +888,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1015,7 +1015,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1172,7 +1172,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.5/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.13.5/4-in-memory-channel.yaml
+index f7aa824b..c4a35137 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.5/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.5/4-in-memory-channel.yaml
+@@ -377,7 +377,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -583,7 +583,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.5/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.13.5/5-mt-channel-broker.yaml
+index 6e95d2c9..4f052d07 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.5/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.5/5-mt-channel-broker.yaml
+@@ -526,7 +526,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -666,7 +666,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -774,7 +774,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.5/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.13.5/6-eventing-post-install.yaml
+index 77ee2370..444f2173 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.5/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.5/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.6/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.13.6/2-eventing-core.yaml
+index 1c9a201d..26f333ee 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.6/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.6/2-eventing-core.yaml
+@@ -888,7 +888,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1015,7 +1015,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1172,7 +1172,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.6/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.13.6/4-in-memory-channel.yaml
+index c130c777..b768b80e 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.6/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.6/4-in-memory-channel.yaml
+@@ -377,7 +377,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -583,7 +583,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.6/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.13.6/5-mt-channel-broker.yaml
+index b2d07439..8b19d329 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.6/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.6/5-mt-channel-broker.yaml
+@@ -526,7 +526,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -666,7 +666,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -774,7 +774,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.6/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.13.6/6-eventing-post-install.yaml
+index e886c2d3..83f2374a 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.6/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.6/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.7/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.13.7/2-eventing-core.yaml
+index d35b334e..5c7c3bf0 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.7/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.7/2-eventing-core.yaml
+@@ -888,7 +888,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1015,7 +1015,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1172,7 +1172,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.7/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.13.7/4-in-memory-channel.yaml
+index a06f66a0..2cb8dd7e 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.7/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.7/4-in-memory-channel.yaml
+@@ -377,7 +377,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -583,7 +583,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.7/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.13.7/5-mt-channel-broker.yaml
+index fab83dd6..ec2b56f6 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.7/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.7/5-mt-channel-broker.yaml
+@@ -526,7 +526,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -666,7 +666,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -774,7 +774,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.7/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.13.7/6-eventing-post-install.yaml
+index 8813d615..fa8f105b 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.7/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.7/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.8/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.13.8/2-eventing-core.yaml
+index f02c34cf..4942739e 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.8/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.8/2-eventing-core.yaml
+@@ -888,7 +888,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1015,7 +1015,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1172,7 +1172,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.8/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.13.8/4-in-memory-channel.yaml
+index 8bf6f845..1f32f8cf 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.8/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.8/4-in-memory-channel.yaml
+@@ -377,7 +377,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -583,7 +583,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.8/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.13.8/5-mt-channel-broker.yaml
+index bec36347..f7ad8721 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.8/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.8/5-mt-channel-broker.yaml
+@@ -526,7 +526,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -666,7 +666,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -774,7 +774,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.13.8/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.13.8/6-eventing-post-install.yaml
+index f4af33ae..8685b940 100644
+--- a/cmd/operator/kodata/knative-eventing/1.13.8/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.13.8/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.0/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.14.0/2-eventing-core.yaml
+index 634b6ddc..7de2f811 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.0/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.0/2-eventing-core.yaml
+@@ -890,7 +890,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1017,7 +1017,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1174,7 +1174,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.0/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.14.0/4-in-memory-channel.yaml
+index c8a7834d..2ac23b67 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.0/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.0/4-in-memory-channel.yaml
+@@ -244,7 +244,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -450,7 +450,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.0/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.14.0/5-mt-channel-broker.yaml
+index e5adb274..ba937013 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.0/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.0/5-mt-channel-broker.yaml
+@@ -535,7 +535,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -675,7 +675,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -783,7 +783,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.0/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.14.0/6-eventing-post-install.yaml
+index 965bc852..81cfd9e0 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.0/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.0/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.1/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.14.1/2-eventing-core.yaml
+index a8c2831d..4898d4db 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.1/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.1/2-eventing-core.yaml
+@@ -890,7 +890,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1017,7 +1017,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1174,7 +1174,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.1/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.14.1/4-in-memory-channel.yaml
+index c4e831da..9d6b9067 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.1/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.1/4-in-memory-channel.yaml
+@@ -244,7 +244,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -450,7 +450,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.1/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.14.1/5-mt-channel-broker.yaml
+index d7210dad..b8b0c94b 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.1/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.1/5-mt-channel-broker.yaml
+@@ -535,7 +535,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -675,7 +675,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -783,7 +783,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.1/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.14.1/6-eventing-post-install.yaml
+index f2461823..6cb39370 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.1/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.1/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.2/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.14.2/2-eventing-core.yaml
+index fb793bf7..184115d7 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.2/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.2/2-eventing-core.yaml
+@@ -890,7 +890,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1017,7 +1017,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1174,7 +1174,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.2/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.14.2/4-in-memory-channel.yaml
+index 1f24621b..9897842a 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.2/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.2/4-in-memory-channel.yaml
+@@ -244,7 +244,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -450,7 +450,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.2/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.14.2/5-mt-channel-broker.yaml
+index 9131a12a..1b7a63c9 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.2/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.2/5-mt-channel-broker.yaml
+@@ -535,7 +535,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -675,7 +675,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -783,7 +783,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.2/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.14.2/6-eventing-post-install.yaml
+index 62cb1577..37802edb 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.2/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.2/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.3/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.14.3/2-eventing-core.yaml
+index 351959b7..85a31ddd 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.3/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.3/2-eventing-core.yaml
+@@ -890,7 +890,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1017,7 +1017,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1174,7 +1174,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.3/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.14.3/4-in-memory-channel.yaml
+index 52c4818e..00b03359 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.3/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.3/4-in-memory-channel.yaml
+@@ -244,7 +244,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -450,7 +450,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.3/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.14.3/5-mt-channel-broker.yaml
+index 052320ce..6d53120a 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.3/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.3/5-mt-channel-broker.yaml
+@@ -535,7 +535,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -675,7 +675,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -783,7 +783,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.3/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.14.3/6-eventing-post-install.yaml
+index 468a68a2..bf84d2b0 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.3/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.3/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.4/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.14.4/2-eventing-core.yaml
+index e1f902b9..2bd989be 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.4/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.4/2-eventing-core.yaml
+@@ -890,7 +890,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1017,7 +1017,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1174,7 +1174,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.4/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.14.4/4-in-memory-channel.yaml
+index 1201f46b..ef8b4531 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.4/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.4/4-in-memory-channel.yaml
+@@ -244,7 +244,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -450,7 +450,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.4/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.14.4/5-mt-channel-broker.yaml
+index 66f8aefc..d12d42a3 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.4/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.4/5-mt-channel-broker.yaml
+@@ -535,7 +535,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -675,7 +675,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -783,7 +783,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.4/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.14.4/6-eventing-post-install.yaml
+index 4de7cc70..f79ca3d2 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.4/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.4/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.5/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.14.5/2-eventing-core.yaml
+index a75d06a6..75b4193e 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.5/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.5/2-eventing-core.yaml
+@@ -890,7 +890,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1017,7 +1017,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1174,7 +1174,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.5/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.14.5/4-in-memory-channel.yaml
+index b01c11f1..44a4cda6 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.5/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.5/4-in-memory-channel.yaml
+@@ -244,7 +244,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -450,7 +450,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.5/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.14.5/5-mt-channel-broker.yaml
+index 22967797..40bb04ca 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.5/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.5/5-mt-channel-broker.yaml
+@@ -535,7 +535,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -675,7 +675,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -783,7 +783,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.5/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.14.5/6-eventing-post-install.yaml
+index 07933dc4..fcbd6750 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.5/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.5/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.6/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.14.6/2-eventing-core.yaml
+index 49776275..9cbc166f 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.6/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.6/2-eventing-core.yaml
+@@ -890,7 +890,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1017,7 +1017,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1174,7 +1174,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.6/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.14.6/4-in-memory-channel.yaml
+index 0b7ac97c..c58d6ec8 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.6/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.6/4-in-memory-channel.yaml
+@@ -244,7 +244,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -450,7 +450,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.6/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.14.6/5-mt-channel-broker.yaml
+index 88120b1f..d0b56409 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.6/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.6/5-mt-channel-broker.yaml
+@@ -535,7 +535,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -675,7 +675,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -783,7 +783,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.6/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.14.6/6-eventing-post-install.yaml
+index 752eddf3..dae87135 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.6/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.6/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.7/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.14.7/2-eventing-core.yaml
+index c7354b2a..05c9c865 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.7/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.7/2-eventing-core.yaml
+@@ -890,7 +890,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1017,7 +1017,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1174,7 +1174,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.7/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.14.7/4-in-memory-channel.yaml
+index c09eb234..a77fbec7 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.7/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.7/4-in-memory-channel.yaml
+@@ -244,7 +244,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -450,7 +450,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.7/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.14.7/5-mt-channel-broker.yaml
+index 707110be..e61c23f8 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.7/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.7/5-mt-channel-broker.yaml
+@@ -535,7 +535,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -675,7 +675,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -783,7 +783,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.14.7/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.14.7/6-eventing-post-install.yaml
+index 16b59b43..8a5a2d32 100644
+--- a/cmd/operator/kodata/knative-eventing/1.14.7/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.14.7/6-eventing-post-install.yaml
+@@ -215,7 +215,7 @@ spec:
+             - "triggers.eventing.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.0/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.15.0/2-eventing-core.yaml
+index 804e4a6d..1b47e883 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.0/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.0/2-eventing-core.yaml
+@@ -951,7 +951,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1099,7 +1099,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1232,7 +1232,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1390,7 +1390,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.0/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.15.0/4-in-memory-channel.yaml
+index a6326291..48b5caa2 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.0/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.0/4-in-memory-channel.yaml
+@@ -245,7 +245,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -452,7 +452,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.0/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.15.0/5-mt-channel-broker.yaml
+index 611df0c8..217e82a6 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.0/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.0/5-mt-channel-broker.yaml
+@@ -544,7 +544,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -685,7 +685,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -794,7 +794,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.0/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.15.0/6-eventing-post-install.yaml
+index 516051a8..846b6a97 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.0/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.0/6-eventing-post-install.yaml
+@@ -229,7 +229,7 @@ spec:
+             - "jobsinks.sinks.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.1/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.15.1/2-eventing-core.yaml
+index c59ce042..fc60967a 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.1/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.1/2-eventing-core.yaml
+@@ -951,7 +951,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1099,7 +1099,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1232,7 +1232,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1390,7 +1390,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.1/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.15.1/4-in-memory-channel.yaml
+index 17a49067..efffe1f2 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.1/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.1/4-in-memory-channel.yaml
+@@ -245,7 +245,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -452,7 +452,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.1/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.15.1/5-mt-channel-broker.yaml
+index 8b87ff88..6c9ad0d1 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.1/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.1/5-mt-channel-broker.yaml
+@@ -544,7 +544,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -685,7 +685,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -794,7 +794,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.1/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.15.1/6-eventing-post-install.yaml
+index 8f956986..2505ec83 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.1/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.1/6-eventing-post-install.yaml
+@@ -229,7 +229,7 @@ spec:
+             - "jobsinks.sinks.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.2/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.15.2/2-eventing-core.yaml
+index c824653b..daa06f23 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.2/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.2/2-eventing-core.yaml
+@@ -951,7 +951,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1099,7 +1099,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1232,7 +1232,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1390,7 +1390,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.2/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.15.2/4-in-memory-channel.yaml
+index 243d06c7..6e8990f6 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.2/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.2/4-in-memory-channel.yaml
+@@ -245,7 +245,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -452,7 +452,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.2/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.15.2/5-mt-channel-broker.yaml
+index 0797e046..77eea3e1 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.2/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.2/5-mt-channel-broker.yaml
+@@ -544,7 +544,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -685,7 +685,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -794,7 +794,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.2/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.15.2/6-eventing-post-install.yaml
+index 8af4f941..dd90293e 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.2/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.2/6-eventing-post-install.yaml
+@@ -229,7 +229,7 @@ spec:
+             - "jobsinks.sinks.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.3/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.15.3/2-eventing-core.yaml
+index 6074a112..2071883b 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.3/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.3/2-eventing-core.yaml
+@@ -951,7 +951,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1099,7 +1099,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1232,7 +1232,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1390,7 +1390,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.3/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.15.3/4-in-memory-channel.yaml
+index c33d95de..6c6efb53 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.3/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.3/4-in-memory-channel.yaml
+@@ -245,7 +245,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -452,7 +452,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.3/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.15.3/5-mt-channel-broker.yaml
+index 2b912ddf..dd76fd10 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.3/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.3/5-mt-channel-broker.yaml
+@@ -544,7 +544,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -685,7 +685,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -794,7 +794,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.15.3/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.15.3/6-eventing-post-install.yaml
+index 978fc3e0..cf2e46e2 100644
+--- a/cmd/operator/kodata/knative-eventing/1.15.3/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.15.3/6-eventing-post-install.yaml
+@@ -229,7 +229,7 @@ spec:
+             - "jobsinks.sinks.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.16.0/2-eventing-core.yaml b/cmd/operator/kodata/knative-eventing/1.16.0/2-eventing-core.yaml
+index 01641865..34877c65 100644
+--- a/cmd/operator/kodata/knative-eventing/1.16.0/2-eventing-core.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.16.0/2-eventing-core.yaml
+@@ -951,7 +951,7 @@ spec:
+                   #            value: ''
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1099,7 +1099,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1232,7 +1232,7 @@ spec:
+               memory: 2048Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -1390,7 +1390,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.16.0/4-in-memory-channel.yaml b/cmd/operator/kodata/knative-eventing/1.16.0/4-in-memory-channel.yaml
+index 0e51e94d..b85762a1 100644
+--- a/cmd/operator/kodata/knative-eventing/1.16.0/4-in-memory-channel.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.16.0/4-in-memory-channel.yaml
+@@ -245,7 +245,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -452,7 +452,7 @@ spec:
+               name: metrics
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.16.0/5-mt-channel-broker.yaml b/cmd/operator/kodata/knative-eventing/1.16.0/5-mt-channel-broker.yaml
+index af48101d..9374d124 100644
+--- a/cmd/operator/kodata/knative-eventing/1.16.0/5-mt-channel-broker.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.16.0/5-mt-channel-broker.yaml
+@@ -553,7 +553,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -694,7 +694,7 @@ spec:
+               value: "8443"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -803,7 +803,7 @@ spec:
+                   fieldPath: metadata.name
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-eventing/1.16.0/6-eventing-post-install.yaml b/cmd/operator/kodata/knative-eventing/1.16.0/6-eventing-post-install.yaml
+index d624d3b7..7a505eda 100644
+--- a/cmd/operator/kodata/knative-eventing/1.16.0/6-eventing-post-install.yaml
++++ b/cmd/operator/kodata/knative-eventing/1.16.0/6-eventing-post-install.yaml
+@@ -230,7 +230,7 @@ spec:
+             - "jobsinks.sinks.knative.dev"
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.13.0/2-serving-core.yaml b/cmd/operator/kodata/knative-serving/1.13.0/2-serving-core.yaml
+index 083394e7..49ccfd5c 100644
+--- a/cmd/operator/kodata/knative-serving/1.13.0/2-serving-core.yaml
++++ b/cmd/operator/kodata/knative-serving/1.13.0/2-serving-core.yaml
+@@ -6251,7 +6251,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -6411,7 +6411,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -6541,7 +6541,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -6731,7 +6731,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.13.0/3-serving-hpa.yaml b/cmd/operator/kodata/knative-serving/1.13.0/3-serving-hpa.yaml
+index cf6fd14e..13925692 100644
+--- a/cmd/operator/kodata/knative-serving/1.13.0/3-serving-hpa.yaml
++++ b/cmd/operator/kodata/knative-serving/1.13.0/3-serving-hpa.yaml
+@@ -71,7 +71,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.13.0/4-serving-post-install-jobs.yaml b/cmd/operator/kodata/knative-serving/1.13.0/4-serving-post-install-jobs.yaml
+index 3c20fd6d..f03fe516 100644
+--- a/cmd/operator/kodata/knative-serving/1.13.0/4-serving-post-install-jobs.yaml
++++ b/cmd/operator/kodata/knative-serving/1.13.0/4-serving-post-install-jobs.yaml
+@@ -60,7 +60,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.13.1/2-serving-core.yaml b/cmd/operator/kodata/knative-serving/1.13.1/2-serving-core.yaml
+index 179ccd18..10167bf7 100644
+--- a/cmd/operator/kodata/knative-serving/1.13.1/2-serving-core.yaml
++++ b/cmd/operator/kodata/knative-serving/1.13.1/2-serving-core.yaml
+@@ -6251,7 +6251,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -6411,7 +6411,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -6541,7 +6541,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -6731,7 +6731,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.13.1/3-serving-hpa.yaml b/cmd/operator/kodata/knative-serving/1.13.1/3-serving-hpa.yaml
+index d20732fa..5c7bdbb4 100644
+--- a/cmd/operator/kodata/knative-serving/1.13.1/3-serving-hpa.yaml
++++ b/cmd/operator/kodata/knative-serving/1.13.1/3-serving-hpa.yaml
+@@ -71,7 +71,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.13.1/4-serving-post-install-jobs.yaml b/cmd/operator/kodata/knative-serving/1.13.1/4-serving-post-install-jobs.yaml
+index 826e6f6f..91261cd1 100644
+--- a/cmd/operator/kodata/knative-serving/1.13.1/4-serving-post-install-jobs.yaml
++++ b/cmd/operator/kodata/knative-serving/1.13.1/4-serving-post-install-jobs.yaml
+@@ -60,7 +60,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.13.2/2-serving-core.yaml b/cmd/operator/kodata/knative-serving/1.13.2/2-serving-core.yaml
+index 2dda78ce..e1710ad6 100644
+--- a/cmd/operator/kodata/knative-serving/1.13.2/2-serving-core.yaml
++++ b/cmd/operator/kodata/knative-serving/1.13.2/2-serving-core.yaml
+@@ -7840,7 +7840,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8000,7 +8000,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8130,7 +8130,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8320,7 +8320,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.13.2/3-serving-hpa.yaml b/cmd/operator/kodata/knative-serving/1.13.2/3-serving-hpa.yaml
+index 6c270d76..ddac70e3 100644
+--- a/cmd/operator/kodata/knative-serving/1.13.2/3-serving-hpa.yaml
++++ b/cmd/operator/kodata/knative-serving/1.13.2/3-serving-hpa.yaml
+@@ -71,7 +71,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.13.2/4-serving-post-install-jobs.yaml b/cmd/operator/kodata/knative-serving/1.13.2/4-serving-post-install-jobs.yaml
+index 4a1285a5..721bb685 100644
+--- a/cmd/operator/kodata/knative-serving/1.13.2/4-serving-post-install-jobs.yaml
++++ b/cmd/operator/kodata/knative-serving/1.13.2/4-serving-post-install-jobs.yaml
+@@ -60,7 +60,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.14.0/2-serving-core.yaml b/cmd/operator/kodata/knative-serving/1.14.0/2-serving-core.yaml
+index f2d75aeb..18e5e7c8 100644
+--- a/cmd/operator/kodata/knative-serving/1.14.0/2-serving-core.yaml
++++ b/cmd/operator/kodata/knative-serving/1.14.0/2-serving-core.yaml
+@@ -8085,7 +8085,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8239,7 +8239,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8363,7 +8363,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8553,7 +8553,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.14.0/3-serving-hpa.yaml b/cmd/operator/kodata/knative-serving/1.14.0/3-serving-hpa.yaml
+index 83da27b1..43ead580 100644
+--- a/cmd/operator/kodata/knative-serving/1.14.0/3-serving-hpa.yaml
++++ b/cmd/operator/kodata/knative-serving/1.14.0/3-serving-hpa.yaml
+@@ -71,7 +71,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.14.0/4-serving-post-install-jobs.yaml b/cmd/operator/kodata/knative-serving/1.14.0/4-serving-post-install-jobs.yaml
+index 6ba564b4..83857a5c 100644
+--- a/cmd/operator/kodata/knative-serving/1.14.0/4-serving-post-install-jobs.yaml
++++ b/cmd/operator/kodata/knative-serving/1.14.0/4-serving-post-install-jobs.yaml
+@@ -60,7 +60,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.14.1/2-serving-core.yaml b/cmd/operator/kodata/knative-serving/1.14.1/2-serving-core.yaml
+index 27376717..44991e3b 100644
+--- a/cmd/operator/kodata/knative-serving/1.14.1/2-serving-core.yaml
++++ b/cmd/operator/kodata/knative-serving/1.14.1/2-serving-core.yaml
+@@ -8092,7 +8092,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8246,7 +8246,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8370,7 +8370,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8560,7 +8560,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.14.1/3-serving-hpa.yaml b/cmd/operator/kodata/knative-serving/1.14.1/3-serving-hpa.yaml
+index 23c4351e..ce294b55 100644
+--- a/cmd/operator/kodata/knative-serving/1.14.1/3-serving-hpa.yaml
++++ b/cmd/operator/kodata/knative-serving/1.14.1/3-serving-hpa.yaml
+@@ -71,7 +71,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.14.1/4-serving-post-install-jobs.yaml b/cmd/operator/kodata/knative-serving/1.14.1/4-serving-post-install-jobs.yaml
+index 3182a32d..c449c730 100644
+--- a/cmd/operator/kodata/knative-serving/1.14.1/4-serving-post-install-jobs.yaml
++++ b/cmd/operator/kodata/knative-serving/1.14.1/4-serving-post-install-jobs.yaml
+@@ -60,7 +60,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.14.2/2-serving-core.yaml b/cmd/operator/kodata/knative-serving/1.14.2/2-serving-core.yaml
+index 7849e729..e1c4cf09 100644
+--- a/cmd/operator/kodata/knative-serving/1.14.2/2-serving-core.yaml
++++ b/cmd/operator/kodata/knative-serving/1.14.2/2-serving-core.yaml
+@@ -8092,7 +8092,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8246,7 +8246,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8370,7 +8370,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8560,7 +8560,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.14.2/3-serving-hpa.yaml b/cmd/operator/kodata/knative-serving/1.14.2/3-serving-hpa.yaml
+index 4093eded..840ba78b 100644
+--- a/cmd/operator/kodata/knative-serving/1.14.2/3-serving-hpa.yaml
++++ b/cmd/operator/kodata/knative-serving/1.14.2/3-serving-hpa.yaml
+@@ -71,7 +71,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.14.2/4-serving-post-install-jobs.yaml b/cmd/operator/kodata/knative-serving/1.14.2/4-serving-post-install-jobs.yaml
+index d38415af..9d37fd08 100644
+--- a/cmd/operator/kodata/knative-serving/1.14.2/4-serving-post-install-jobs.yaml
++++ b/cmd/operator/kodata/knative-serving/1.14.2/4-serving-post-install-jobs.yaml
+@@ -60,7 +60,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.15.0/2-serving-core.yaml b/cmd/operator/kodata/knative-serving/1.15.0/2-serving-core.yaml
+index b7af9dbf..79bb822d 100644
+--- a/cmd/operator/kodata/knative-serving/1.15.0/2-serving-core.yaml
++++ b/cmd/operator/kodata/knative-serving/1.15.0/2-serving-core.yaml
+@@ -8599,7 +8599,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8753,7 +8753,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8877,7 +8877,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -9067,7 +9067,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.15.0/3-serving-hpa.yaml b/cmd/operator/kodata/knative-serving/1.15.0/3-serving-hpa.yaml
+index 4b1d8af3..b2f7efc0 100644
+--- a/cmd/operator/kodata/knative-serving/1.15.0/3-serving-hpa.yaml
++++ b/cmd/operator/kodata/knative-serving/1.15.0/3-serving-hpa.yaml
+@@ -71,7 +71,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.15.0/4-serving-post-install-jobs.yaml b/cmd/operator/kodata/knative-serving/1.15.0/4-serving-post-install-jobs.yaml
+index 9ba7ea9d..a9532d27 100644
+--- a/cmd/operator/kodata/knative-serving/1.15.0/4-serving-post-install-jobs.yaml
++++ b/cmd/operator/kodata/knative-serving/1.15.0/4-serving-post-install-jobs.yaml
+@@ -60,7 +60,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -124,7 +124,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.15.1/2-serving-core.yaml b/cmd/operator/kodata/knative-serving/1.15.1/2-serving-core.yaml
+index 683d6210..5d274480 100644
+--- a/cmd/operator/kodata/knative-serving/1.15.1/2-serving-core.yaml
++++ b/cmd/operator/kodata/knative-serving/1.15.1/2-serving-core.yaml
+@@ -8599,7 +8599,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8753,7 +8753,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8877,7 +8877,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -9067,7 +9067,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.15.1/3-serving-hpa.yaml b/cmd/operator/kodata/knative-serving/1.15.1/3-serving-hpa.yaml
+index a4fa3bb5..a06ce877 100644
+--- a/cmd/operator/kodata/knative-serving/1.15.1/3-serving-hpa.yaml
++++ b/cmd/operator/kodata/knative-serving/1.15.1/3-serving-hpa.yaml
+@@ -71,7 +71,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.15.1/4-serving-post-install-jobs.yaml b/cmd/operator/kodata/knative-serving/1.15.1/4-serving-post-install-jobs.yaml
+index 53739a90..84117ece 100644
+--- a/cmd/operator/kodata/knative-serving/1.15.1/4-serving-post-install-jobs.yaml
++++ b/cmd/operator/kodata/knative-serving/1.15.1/4-serving-post-install-jobs.yaml
+@@ -60,7 +60,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -124,7 +124,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.15.2/2-serving-core.yaml b/cmd/operator/kodata/knative-serving/1.15.2/2-serving-core.yaml
+index 93765055..ed0deae7 100644
+--- a/cmd/operator/kodata/knative-serving/1.15.2/2-serving-core.yaml
++++ b/cmd/operator/kodata/knative-serving/1.15.2/2-serving-core.yaml
+@@ -8599,7 +8599,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8753,7 +8753,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -8877,7 +8877,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -9067,7 +9067,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.15.2/3-serving-hpa.yaml b/cmd/operator/kodata/knative-serving/1.15.2/3-serving-hpa.yaml
+index 91cd15bb..deaa5654 100644
+--- a/cmd/operator/kodata/knative-serving/1.15.2/3-serving-hpa.yaml
++++ b/cmd/operator/kodata/knative-serving/1.15.2/3-serving-hpa.yaml
+@@ -71,7 +71,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.15.2/4-serving-post-install-jobs.yaml b/cmd/operator/kodata/knative-serving/1.15.2/4-serving-post-install-jobs.yaml
+index eb7a2de5..6b346260 100644
+--- a/cmd/operator/kodata/knative-serving/1.15.2/4-serving-post-install-jobs.yaml
++++ b/cmd/operator/kodata/knative-serving/1.15.2/4-serving-post-install-jobs.yaml
+@@ -60,7 +60,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -124,7 +124,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.16.0/2-serving-core.yaml b/cmd/operator/kodata/knative-serving/1.16.0/2-serving-core.yaml
+index 9db5eb2b..7c9dca07 100644
+--- a/cmd/operator/kodata/knative-serving/1.16.0/2-serving-core.yaml
++++ b/cmd/operator/kodata/knative-serving/1.16.0/2-serving-core.yaml
+@@ -8868,7 +8868,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -9022,7 +9022,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -9146,7 +9146,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -9336,7 +9336,7 @@ spec:
+               value: knative.dev/internal/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.16.0/3-serving-hpa.yaml b/cmd/operator/kodata/knative-serving/1.16.0/3-serving-hpa.yaml
+index baaf35d0..3ae29a16 100644
+--- a/cmd/operator/kodata/knative-serving/1.16.0/3-serving-hpa.yaml
++++ b/cmd/operator/kodata/knative-serving/1.16.0/3-serving-hpa.yaml
+@@ -71,7 +71,7 @@ spec:
+               value: knative.dev/serving
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/cmd/operator/kodata/knative-serving/1.16.0/4-serving-post-install-jobs.yaml b/cmd/operator/kodata/knative-serving/1.16.0/4-serving-post-install-jobs.yaml
+index 38f852f4..fe3127a0 100644
+--- a/cmd/operator/kodata/knative-serving/1.16.0/4-serving-post-install-jobs.yaml
++++ b/cmd/operator/kodata/knative-serving/1.16.0/4-serving-post-install-jobs.yaml
+@@ -59,7 +59,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -122,7 +122,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/config/charts/knative-operator/values.yaml b/config/charts/knative-operator/values.yaml
+index 3492e437..2706e209 100644
+--- a/config/charts/knative-operator/values.yaml
++++ b/config/charts/knative-operator/values.yaml
+@@ -4,7 +4,7 @@ knative_operator:
+     tag: {{ tag }}
+     containerSecurityContext:
+       allowPrivilegeEscalation: false
+-      readOnlyRootFilesystem: true
++      readOnlyRootFilesystem: false
+       runAsNonRoot: true
+     resources:
+       requests:
+@@ -18,7 +18,7 @@ knative_operator:
+     tag: {{ tag }}
+     containerSecurityContext:
+       allowPrivilegeEscalation: false
+-      readOnlyRootFilesystem: true
++      readOnlyRootFilesystem: false
+       runAsNonRoot: true
+     resources:
+       requests:
+diff --git a/config/manager/operator.yaml b/config/manager/operator.yaml
+index bbb0a297..c1a6521d 100644
+--- a/config/manager/operator.yaml
++++ b/config/manager/operator.yaml
+@@ -64,7 +64,7 @@ spec:
+               value: ""
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/config/webhook/webhook.yaml b/config/webhook/webhook.yaml
+index 58973c14..c24c1cfe 100644
+--- a/config/webhook/webhook.yaml
++++ b/config/webhook/webhook.yaml
+@@ -88,7 +88,7 @@ spec:
+           value: ""
+         securityContext:
+           allowPrivilegeEscalation: false
+-          readOnlyRootFilesystem: true
++          readOnlyRootFilesystem: false
+           runAsNonRoot: true
+           capabilities:
+             drop:
+diff --git a/pkg/reconciler/common/testdata/manifest.yaml b/pkg/reconciler/common/testdata/manifest.yaml
+index 1c71a512..e9fbfa73 100644
+--- a/pkg/reconciler/common/testdata/manifest.yaml
++++ b/pkg/reconciler/common/testdata/manifest.yaml
+@@ -2804,7 +2804,7 @@ spec:
+               value: knative.dev/net-istio
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+@@ -2984,7 +2984,7 @@ spec:
+           securityContext:
+             allowPrivilegeEscalation: false
+             privileged: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+       volumes:
+         - name: config-kafka-source-data-plane
+           configMap:
+@@ -3046,7 +3046,7 @@ spec:
+               memory: 1000Mi
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/contour/net-contour.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/contour/net-contour.yaml
+index ac0deeaf..26308773 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/contour/net-contour.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/contour/net-contour.yaml
+@@ -137,7 +137,7 @@ spec:
+               containerPort: 8008
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/istio/net-istio.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/istio/net-istio.yaml
+index 790fc417..31db1ee3 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/istio/net-istio.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/istio/net-istio.yaml
+@@ -326,7 +326,7 @@ spec:
+               value: knative.dev/net-istio
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/kourier/kourier.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/kourier/kourier.yaml
+index 88567228..ff041ed5 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/kourier/kourier.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.6/kourier/kourier.yaml
+@@ -342,7 +342,7 @@ spec:
+               command: ["/ko-app/kourier", "-probe-addr=:18000"]
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/contour/net-contour.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/contour/net-contour.yaml
+index 345f4797..7bc4f2df 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/contour/net-contour.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/contour/net-contour.yaml
+@@ -137,7 +137,7 @@ spec:
+               containerPort: 8008
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/istio/net-istio.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/istio/net-istio.yaml
+index 3ba16462..06b4a754 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/istio/net-istio.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/istio/net-istio.yaml
+@@ -326,7 +326,7 @@ spec:
+               value: knative.dev/net-istio
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/kourier/kourier.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/kourier/kourier.yaml
+index 47becc8d..13a47533 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/kourier/kourier.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.7/kourier/kourier.yaml
+@@ -343,7 +343,7 @@ spec:
+               command: ["/ko-app/kourier", "-probe-addr=:18000"]
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/contour/net-contour.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/contour/net-contour.yaml
+index a9f58b0a..b76253cc 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/contour/net-contour.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/contour/net-contour.yaml
+@@ -137,7 +137,7 @@ spec:
+               containerPort: 8008
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/istio/net-istio.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/istio/net-istio.yaml
+index 89d700b3..e2b385ed 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/istio/net-istio.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/istio/net-istio.yaml
+@@ -326,7 +326,7 @@ spec:
+               value: knative.dev/net-istio
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/kourier/kourier.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/kourier/kourier.yaml
+index 808516a2..4044940f 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/kourier/kourier.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.8/kourier/kourier.yaml
+@@ -357,7 +357,7 @@ spec:
+               command: ["/ko-app/kourier", "-probe-addr=:18000"]
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/contour/net-contour.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/contour/net-contour.yaml
+index 8a15f25e..f1b8e07f 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/contour/net-contour.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/contour/net-contour.yaml
+@@ -140,7 +140,7 @@ spec:
+               containerPort: 8008
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/istio/net-istio.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/istio/net-istio.yaml
+index e1fe7ad8..feefa811 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/istio/net-istio.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/istio/net-istio.yaml
+@@ -326,7 +326,7 @@ spec:
+               value: knative.dev/net-istio
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/kourier/kourier.yaml b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/kourier/kourier.yaml
+index 5bce4aa1..bc18c90a 100644
+--- a/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/kourier/kourier.yaml
++++ b/pkg/reconciler/knativeserving/ingress/testdata/kodata/ingress/1.9/kourier/kourier.yaml
+@@ -380,7 +380,7 @@ spec:
+               command: ["/ko-app/kourier", "-probe-addr=:18000"]
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/contour/net-contour.yaml b/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/contour/net-contour.yaml
+index 8a15f25e..f1b8e07f 100644
+--- a/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/contour/net-contour.yaml
++++ b/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/contour/net-contour.yaml
+@@ -140,7 +140,7 @@ spec:
+               containerPort: 8008
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/istio/net-istio.yaml b/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/istio/net-istio.yaml
+index e1fe7ad8..feefa811 100644
+--- a/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/istio/net-istio.yaml
++++ b/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/istio/net-istio.yaml
+@@ -326,7 +326,7 @@ spec:
+               value: knative.dev/net-istio
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+diff --git a/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/kourier/kourier.yaml b/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/kourier/kourier.yaml
+index 5bce4aa1..bc18c90a 100644
+--- a/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/kourier/kourier.yaml
++++ b/pkg/reconciler/manifests/testdata/kodata/ingress/1.9/kourier/kourier.yaml
+@@ -380,7 +380,7 @@ spec:
+               command: ["/ko-app/kourier", "-probe-addr=:18000"]
+           securityContext:
+             allowPrivilegeEscalation: false
+-            readOnlyRootFilesystem: true
++            readOnlyRootFilesystem: false
+             runAsNonRoot: true
+             capabilities:
+               drop:
+-- 
+2.34.1
+

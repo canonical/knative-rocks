@@ -1,7 +1,9 @@
-# From (ko image): https://github.com/knative-extensions/net-istio/tree/release-1.12/cmd/controller
+# From (ko image): https://github.com/knative-extensions/net-istio/tree/knative-v1.16.0/cmd/controller
+# Currently based on gcr.io/knative-releases/knative.dev/net-istio/cmd/controller@sha256:e70bc675f97778da144157f125b3001124ba7a5903b85dab9e77776352fea1c7
+# See https://github.com/canonical/knative-operators/blob/main/tools/get-images.sh#L36-L42
 name: net-istio-controller
 base: ubuntu@22.04
-version: 1.12.3
+version: 1.16.0
 summary: An image for Knative's net-istio controller
 description: |
   An image for Knative's net-istio controller
@@ -36,24 +38,21 @@ parts:
     plugin: go
     source: https://github.com/knative-extensions/net-istio.git
     source-type: git
-    source-tag: knative-v1.12.3
+    source-tag: knative-v1.16.0
     overlay-packages:
       # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
       - ca-certificates
     build-snaps:
-      - go/1.21/stable
+      - go/1.22/stable # from https://github.com/knative-extensions/net-istio/blob/main/go.mod#L3
     build-environment:
       - CGO_ENABLED: 0
       - GOOS: linux
     stage-packages:
       # Install the packages existing in the base for the upstream image
-      - netbase
+      # Base upstream image defined at https://github.com/knative-extensions/net-istio/blob/main/.ko.yaml#L1
+      # Packages https://github.com/wolfi-dev/tools/blob/main/images/static/configs/alpine.apko.yaml#L3
       - tzdata
     override-build: |
       cd cmd/controller
       mkdir $CRAFT_PART_INSTALL/ko-app
       go build -o $CRAFT_PART_INSTALL/ko-app/controller -a .
-
-      # Copy the files from the ko-data directory to the install directory
-      mkdir -p $CRAFT_PART_INSTALL/var/run/ko
-      cp -r $CRAFT_PART_SRC/cmd/controller/kodata/. $CRAFT_PART_INSTALL/var/run/ko

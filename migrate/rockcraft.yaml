@@ -1,7 +1,7 @@
-# From (ko image): https://github.com/knative/pkg/blob/release-1.12/apiextensions/storageversion/cmd/migrate/main.go
+# From (ko image): https://github.com/knative/pkg/blob/release-1.16/apiextensions/storageversion/cmd/migrate/main.go
 name: migrate
 base: ubuntu@22.04
-version: 1.12.4
+version: 1.16.0
 summary: An image for Knative's migrate
 description: |
   An image for Knative's migrate
@@ -36,12 +36,12 @@ parts:
     plugin: go
     source: https://github.com/knative/pkg.git
     source-type: git
-    source-branch: release-1.12
+    source-branch: release-1.16
     overlay-packages:
       # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
       - ca-certificates
     build-snaps:
-      - go/1.21/stable
+      - go/1.22/stable # from https://github.com/knative/pkg/blob/release-1.16/go.mod#L3
     build-environment:
       - CGO_ENABLED: 0
       - GOOS: linux

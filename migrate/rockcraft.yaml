@@ -1,7 +1,7 @@
 # From (ko image): https://github.com/knative/pkg/blob/release-1.16/apiextensions/storageversion/cmd/migrate/main.go
 name: migrate
 base: ubuntu@22.04
-version: 1.16.1
+version: 1.16.0
 summary: An image for Knative's migrate
 description: |
   An image for Knative's migrate

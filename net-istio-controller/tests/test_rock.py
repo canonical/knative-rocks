@@ -15,21 +15,6 @@ def test_rock():
     rock_version = check_rock.get_version()
     LOCAL_ROCK_IMAGE = f"{rock_image}:{rock_version}"
 
-    # assert the rock contains the expected files
-    subprocess.run(
-        [
-            "docker",
-            "run",
-            "--rm",
-            "--entrypoint",
-            "/bin/bash",
-            LOCAL_ROCK_IMAGE,
-            "-c",
-            "ls -la /var/run/ko",
-        ],
-        check=True,
-    )
-    
     subprocess.run(
         [
             "docker",

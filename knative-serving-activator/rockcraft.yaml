@@ -17,7 +17,7 @@ environment:
   SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
 
 services:
-  knative-serving-activator:
+  activator:
     override: replace
     summary: "Knative Serving Activator service"
     startup: enabled
@@ -32,7 +32,7 @@ parts:
       dpkg-query --root=${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/ -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W) \
       > ${CRAFT_PART_INSTALL}/usr/share/rocks/dpkg.query
 
-  operator:
+  activator:
     plugin: go
     source: https://github.com/knative/serving
     source-type: git

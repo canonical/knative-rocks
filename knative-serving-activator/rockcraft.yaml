@@ -1,7 +1,7 @@
 # Based on ko image: https://github.com/knative/serving/tree/knative-v1.12.4/cmd/activator
-name: knative-activator
-summary: Knative activator
-description: "Knative activator"
+name: knative-serving-activator
+summary: Knative Serving Activator
+description: "Knative Serving Activator"
 version: "1.12.4"
 license: Apache-2.0
 base: ubuntu@22.04
@@ -17,9 +17,9 @@ environment:
   SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
 
 services:
-  knative-activator:
+  knative-serving-activator:
     override: replace
-    summary: "Knative activator service"
+    summary: "Knative Serving Activator service"
     startup: enabled
     command: "/ko-app/activator"
 

@@ -1,5 +1,5 @@
 # Based on ko image: https://github.com/knative/serving/tree/knative-v1.12.4/cmd/activator
-name: knative-serving-activator
+name: knative-activator
 summary: Knative Serving Activator
 description: "Knative Serving Activator"
 version: "1.12.4"
@@ -71,7 +71,7 @@ parts:
 
       # Copy the files from the ko-data directory to the install directory
       mkdir -p $CRAFT_PART_INSTALL/var/run/ko
-      cp -r cmd/activator/kodata/. $CRAFT_PART_INSTALL/var/run/ko
+      cp -r $CRAFT_PART_SRC/cmd/activator/kodata/. $CRAFT_PART_INSTALL/var/run/ko
 
       # Copy the go binary to the install directory
       mkdir $CRAFT_PART_INSTALL/ko-app

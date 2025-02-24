@@ -1,5 +1,5 @@
 # Based on ko image: https://github.com/knative/serving/tree/knative-v1.12.4/cmd/queue
-name: knative-serving-queue
+name: knative-queue
 summary: Knative Serving Queue
 description: "Knative Serving Queue"
 version: "1.12.4"
@@ -17,7 +17,7 @@ environment:
   SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
 
 services:
-  knative-serving-queue:
+  knative-queue:
     override: replace
     summary: "Knative Serving Queue service"
     startup: enabled
@@ -43,7 +43,7 @@ parts:
     # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
       - ca-certificates
     build-snaps:
-      - go/1.22/stable
+      - go/1.19/stable
     build-environment:
       - CGO_ENABLED: 0
       - GOOS: linux
@@ -71,7 +71,7 @@ parts:
 
       # Copy the files from the ko-data directory to the install directory
       mkdir -p $CRAFT_PART_INSTALL/var/run/ko
-      cp -r cmd/queue/kodata/. $CRAFT_PART_INSTALL/var/run/ko
+      cp -r $CRAFT_PART_SRC/cmd/queue/kodata/. $CRAFT_PART_INSTALL/var/run/ko
 
       # Copy the go binary to the install directory
       mkdir $CRAFT_PART_INSTALL/ko-app

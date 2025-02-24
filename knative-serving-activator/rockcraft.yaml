@@ -17,7 +17,7 @@ environment:
   SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
 
 services:
-  activator:
+  knative-activator:
     override: replace
     summary: "Knative Serving Activator service"
     startup: enabled
@@ -43,15 +43,17 @@ parts:
     # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
       - ca-certificates
     build-snaps:
-      - go/1.22/stable
+      - go/1.18/stable
     build-environment:
       - CGO_ENABLED: 0
       - GOOS: linux
-
+    stage-packages:
     # Install packages existing in the base for the upstream image.
     # Base image is set upstream in https://github.com/knative/operator/blob/knative-v1.16.0/.ko.yaml#L1.
     # Packages existing in the base image are documented
     # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
+      - netbase
+      - tzdata
     override-build: |
       # patch readOnlyRootFilesystem in manifests applied by the operator
       # More details in https://github.com/canonical/knative-operators/issues/291

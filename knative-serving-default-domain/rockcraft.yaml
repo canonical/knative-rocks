@@ -53,15 +53,6 @@ parts:
     # Packages existing in the base image are documented
     # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
     override-build: |
-      # patch readOnlyRootFilesystem in manifests applied by the operator
-      # More details in https://github.com/canonical/knative-operators/issues/291
-      # Remove once pebble won't need to always write some state to disk
-      # https://github.com/canonical/pebble/issues/462
-      find . -type f \
-          -exec sed -i \
-          "s#readOnlyRootFilesystem: true#readOnlyRootFilesystem: false#g" \
-          {} +
-
       go mod download
 
       # Build

@@ -2,7 +2,7 @@
 name: knative-controller
 summary: Knative Serving Controller
 description: "Knative Serving Controller"
-version: "1.12.4"
+version: "1.16.0"
 license: Apache-2.0
 base: ubuntu@22.04
 platforms:
@@ -36,14 +36,14 @@ parts:
     plugin: go
     source: https://github.com/knative/serving
     source-type: git
-    source-tag: knative-v1.12.4
+    source-tag: knative-v1.16.0
     overlay-packages:
     # Install ca-certificates found in the base image
     # reference: https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md?plain=1#L9.
     # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
       - ca-certificates
     build-snaps:
-      - go/1.19/stable
+      - go/1.22/stable
     build-environment:
       - CGO_ENABLED: 0
       - GOOS: linux
@@ -71,7 +71,7 @@ parts:
 
       # Copy the files from the ko-data directory to the install directory
       mkdir -p $CRAFT_PART_INSTALL/var/run/ko
-      cp -r $CRAFT_PART_SRC/cmd/controller/kodata/. $CRAFT_PART_INSTALL/var/run/ko
+      #cp -r cmd/controller/kodata/. $CRAFT_PART_INSTALL/var/run/ko
 
       # Copy the go binary to the install directory
       mkdir $CRAFT_PART_INSTALL/ko-app

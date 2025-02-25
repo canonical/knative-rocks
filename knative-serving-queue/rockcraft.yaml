@@ -43,7 +43,7 @@ parts:
     # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
       - ca-certificates
     build-snaps:
-      - go/1.19/stable
+      - go/1.22/stable
     build-environment:
       - CGO_ENABLED: 0
       - GOOS: linux
@@ -71,7 +71,7 @@ parts:
 
       # Copy the files from the ko-data directory to the install directory
       mkdir -p $CRAFT_PART_INSTALL/var/run/ko
-      cp -r $CRAFT_PART_SRC/cmd/queue/kodata/. $CRAFT_PART_INSTALL/var/run/ko
+      cp -L -r $CRAFT_PART_SRC/cmd/queue/kodata/. $CRAFT_PART_INSTALL/var/run/ko
 
       # Copy the go binary to the install directory
       mkdir $CRAFT_PART_INSTALL/ko-app

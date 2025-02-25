@@ -1,4 +1,4 @@
-# Based on ko image: https://github.com/knative/serving/tree/knative-v1.12.4/cmd/activator
+# Based on ko image: https://github.com/knative/serving/tree/knative-v1.12.4/cmd/default-domain
 name: knative-default-domain
 summary: Knative Serving Default Domain
 description: "Knative Serving Default Domain"

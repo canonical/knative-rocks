@@ -1,8 +1,8 @@
-# Based on ko image: https://github.com/knative/serving/tree/knative-v1.12.4/cmd/webhook
+# Based on ko image: https://github.com/knative/serving/tree/knative-v1.16.0/cmd/webhook
 name: knative-serving-webhook
 summary: Knative Serving Webhook
 description: "Knative Serving Webhook"
-version: "1.12.4"
+version: "1.16.0"
 license: Apache-2.0
 base: ubuntu@22.04
 platforms:
@@ -36,7 +36,7 @@ parts:
     plugin: go
     source: https://github.com/knative/serving
     source-type: git
-    source-tag: knative-v1.12.4
+    source-tag: knative-v1.16.0
     overlay-packages:
     # Install ca-certificates found in the base image
     # reference: https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md?plain=1#L9.
@@ -55,6 +55,14 @@ parts:
       - netbase
       - tzdata
     override-build: |
+      # patch readOnlyRootFilesystem in manifests applied by the operator
+      # More details in https://github.com/canonical/knative-operators/issues/291
+      # Remove once pebble won't need to always write some state to disk
+      # https://github.com/canonical/pebble/issues/462
+      find . -type f \
+          -exec sed -i \
+          "s#readOnlyRootFilesystem: true#readOnlyRootFilesystem: false#g" \
+          {} +
 
       go mod download
 
@@ -64,7 +72,7 @@ parts:
       # Copy the files from the ko-data directory to the install directory
       mkdir -p $CRAFT_PART_INSTALL/var/run/ko
       # cp with `-L` to copy the linked file rather than the symlink.
-      cp -L -r $CRAFT_PART_SRC/cmd/webhook/kodata/. $CRAFT_PART_INSTALL/var/run/ko
+      # cp -L -r $CRAFT_PART_SRC/cmd/webhook/kodata/. $CRAFT_PART_INSTALL/var/run/ko
 
       # Copy the go binary to the install directory
       mkdir $CRAFT_PART_INSTALL/ko-app

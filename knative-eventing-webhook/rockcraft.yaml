@@ -1,0 +1,78 @@
+# Based on ko image: https://github.com/knative/eventing/tree/knative-v1.16.1/cmd/broker/filter
+name: knative-eventing-webhook
+summary: Knative eventing Webhook
+description: "Knative Eventing Webhook"
+version: "1.16.1"
+license: Apache-2.0
+base: ubuntu@22.04
+platforms:
+    amd64:
+run-user: _daemon_
+
+environment:
+  # Required due to the go codebase relying on the OS Env being set
+  # See https://github.com/knative/operator/blob/knative-v1.16.0/pkg/reconciler/common/releases.go#L36
+  KO_DATA_PATH: "/var/run/ko"
+  # env identifies where to locate the SSL certificate file
+  SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+
+services:
+  knative-eventing-webhook:
+    override: replace
+    summary: "Knative Eventing webhook service"
+    startup: enabled
+    command: "/ko-app/webhook"
+
+parts:
+  security-team-requirement:
+    plugin: nil
+    override-build: |
+      mkdir -p ${CRAFT_PART_INSTALL}/usr/share/rocks
+      (echo "# os-release" && cat /etc/os-release && echo "# dpkg-query" && \
+      dpkg-query --root=${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/ -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W) \
+      > ${CRAFT_PART_INSTALL}/usr/share/rocks/dpkg.query
+
+  webhook:
+    plugin: go
+    source: https://github.com/knative/eventing
+    source-type: git
+    source-tag: knative-v1.16.1
+    overlay-packages:
+    # Install ca-certificates found in the base image
+    # reference: https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md?plain=1#L9.
+    # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
+      - ca-certificates
+    build-snaps:
+      - go/1.22/stable
+    build-environment:
+      - CGO_ENABLED: 0
+      - GOOS: linux
+    stage-packages:
+    # Install packages existing in the base for the upstream image.
+    # Base image is set upstream in https://github.com/knative/operator/blob/knative-v1.16.0/.ko.yaml#L1.
+    # Packages existing in the base image are documented
+    # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
+      - netbase
+      - tzdata
+    override-build: |
+      # patch readOnlyRootFilesystem in manifests applied by the operator
+      # More details in https://github.com/canonical/knative-operators/issues/291
+      # Remove once pebble won't need to always write some state to disk
+      # https://github.com/canonical/pebble/issues/462
+      find . -type f \
+          -exec sed -i \
+          "s#readOnlyRootFilesystem: true#readOnlyRootFilesystem: false#g" \
+          {} +
+
+      go mod download
+
+      # Build
+      go build -a -o webhook ./cmd/webhook
+
+      # Copy the files from the ko-data directory to the install directory
+      mkdir -p $CRAFT_PART_INSTALL/var/run/ko
+      cp -r -L $CRAFT_PART_SRC/cmd/webhook/kodata/. $CRAFT_PART_INSTALL/var/run/ko
+
+      # Copy the go binary to the install directory
+      mkdir $CRAFT_PART_INSTALL/ko-app
+      cp -r webhook $CRAFT_PART_INSTALL/ko-app/webhook

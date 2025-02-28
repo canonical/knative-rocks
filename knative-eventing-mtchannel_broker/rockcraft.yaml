@@ -17,7 +17,7 @@ environment:
   SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
 
 services:
-  mtchannel_broker:
+  knative-eventing-mtchannel-broker:
     override: replace
     summary: "Knative Eventing Mtchannel Broker service"
     startup: enabled

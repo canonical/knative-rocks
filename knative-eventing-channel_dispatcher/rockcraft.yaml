@@ -1,4 +1,4 @@
-# Based on ko image: https://github.com/knative/eventing/tree/knative-v1.16.1/cmd/broker/filter
+# Based on ko image: https://github.com/knative/eventing/tree/knative-v1.16.1/cmd/in_memory/channel_dispatcher
 name: knative-eventing-channel-dispatcher
 summary: Knative Eventing Channel Dispatcher
 description: "Knative Eventing Channel Dispatcher"

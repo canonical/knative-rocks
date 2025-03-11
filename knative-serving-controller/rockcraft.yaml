@@ -1,5 +1,5 @@
-# Based on ko image: https://github.com/knative/serving/tree/knative-v1.12.4/cmd/controller
-name: knative-controller
+# Based on ko image: https://github.com/knative/serving/tree/knative-v1.16.0/cmd/controller
+name: knative-serving-controller
 summary: Knative Serving Controller
 description: "Knative Serving Controller"
 version: "1.16.0"
@@ -17,7 +17,7 @@ environment:
   SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
 
 services:
-  knative-controller:
+  knative-serving-controller:
     override: replace
     summary: "Knative Serving Controller service"
     startup: enabled

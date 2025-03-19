@@ -5,9 +5,10 @@ description: "Knative Eventing Channel Dispatcher"
 version: "1.16.1"
 license: Apache-2.0
 base: ubuntu@22.04
+run-user: _daemon_
+
 platforms:
     amd64:
-run-user: _daemon_
 
 environment:
   # Required due to the go codebase relying on the OS Env being set
@@ -55,15 +56,6 @@ parts:
       - netbase
       - tzdata
     override-build: |
-      # patch readOnlyRootFilesystem in manifests applied by the operator
-      # More details in https://github.com/canonical/knative-operators/issues/291
-      # Remove once pebble won't need to always write some state to disk
-      # https://github.com/canonical/pebble/issues/462
-      find . -type f \
-          -exec sed -i \
-          "s#readOnlyRootFilesystem: true#readOnlyRootFilesystem: false#g" \
-          {} +
-
       go mod download
 
       # Build

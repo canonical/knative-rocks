@@ -5,9 +5,10 @@ description: "Knative Serving Default Domain"
 version: "1.16.0"
 license: Apache-2.0
 base: ubuntu@22.04
+run-user: _daemon_
+
 platforms:
     amd64:
-run-user: _daemon_
 
 environment:
   # Required due to the go codebase relying on the OS Env being set
@@ -59,7 +60,6 @@ parts:
       go build -a -o default-domain ./cmd/default-domain
 
       # Copy the files from the ko-data directory to the install directory
-      # The upstream dockerfile doesn't have ko-data
       mkdir -p $CRAFT_PART_INSTALL/var/run/ko
 
       # Copy the go binary to the install directory

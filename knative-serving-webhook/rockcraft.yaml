@@ -71,8 +71,6 @@ parts:
 
       # Copy the files from the ko-data directory to the install directory
       mkdir -p $CRAFT_PART_INSTALL/var/run/ko
-      # cp with `-L` to copy the linked file rather than the symlink.
-      # cp -L -r $CRAFT_PART_SRC/cmd/webhook/kodata/. $CRAFT_PART_INSTALL/var/run/ko
 
       # Copy the go binary to the install directory
       mkdir $CRAFT_PART_INSTALL/ko-app

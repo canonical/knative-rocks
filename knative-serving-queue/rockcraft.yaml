@@ -5,9 +5,10 @@ description: "Knative Serving Queue"
 version: "1.16.0"
 license: Apache-2.0
 base: ubuntu@22.04
+run-user: _daemon_
+
 platforms:
     amd64:
-run-user: _daemon_
 
 environment:
   # Required due to the go codebase relying on the OS Env being set

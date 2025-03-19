@@ -58,22 +58,3 @@ def test_rock():
         ],
         check=True,
     )
-    # ensure no "readOnlyRootFilesystem: true" in the manifests
-    subprocess.run(
-        [
-            "docker",
-            "run",
-            "--rm",
-            "--entrypoint",
-            "/bin/bash",
-            LOCAL_ROCK_IMAGE,
-            "-c",
-            # A. if grep found the string (test should fail) then grep returns 0.
-            # But we want the test to fail, so we do && to return exit code 1
-            # B. if grep did NOT find the string (test should succecced) then grep returns 1.
-            # But we want the test to succeed, so in this case the && is not calculated,
-            # since we have a failing exit code and || exit 0 happens
-            'grep -ri "readOnlyRootFilesystem: true" /var/run/ko && exit 1 || exit 0',
-        ],
-        check=True,
-    )

@@ -15,7 +15,6 @@ def test_rock():
     rock_image = check_rock.get_name()
     rock_version = check_rock.get_version()
     LOCAL_ROCK_IMAGE = f"{rock_image}:{rock_version}"
-    logging.info("start")
     # assert the rock contains the expected files
     subprocess.run(
         [
@@ -31,7 +30,6 @@ def test_rock():
         check=True,
 
     )
-    logging.info("start")
     subprocess.run(
         [
             "docker",
@@ -45,7 +43,6 @@ def test_rock():
         ],
         check=True,
     )
-    logging.info("start")
     # check for SSL cert file
     subprocess.run(
         [
@@ -60,4 +57,3 @@ def test_rock():
         ],
         check=True,
     )
-    logging.info("start")

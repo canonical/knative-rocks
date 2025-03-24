@@ -11,8 +11,7 @@ platforms:
     amd64:
       
 environment:
-  # Required due to the go codebase relying on the OS Env being set
-  # See https://github.com/knative/operator/blob/knative-v1.16.0/pkg/reconciler/common/releases.go#L36
+  # env is set in upstream image, can be viewed with `docker inspect`
   KO_DATA_PATH: "/var/run/ko"
   # env identifies where to locate the SSL certificate file
   SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
@@ -50,7 +49,7 @@ parts:
       - GOOS: linux
     stage-packages:
     # Install packages existing in the base for the upstream image.
-    # Base image is set upstream in https://github.com/knative/operator/blob/knative-v1.16.0/.ko.yaml#L1.
+    # Base image is set upstream in https://github.com/knative/operator/blob/knative-v1.16.1/.ko.yaml#L2.
     # Packages existing in the base image are documented
     # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
       - netbase

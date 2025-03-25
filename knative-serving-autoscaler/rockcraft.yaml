@@ -50,7 +50,7 @@ parts:
       - GOOS: linux
     stage-packages:
     # Install packages existing in the base for the upstream image.
-    # Base image is set upstream in https://github.com/knative/operator/blob/knative-v1.16.0/.ko.yaml#L1.
+    # Base image is set upstream in https://github.com/knative/serving/blob/knative-v1.16.0/.ko.yaml#L2.
     # Packages existing in the base image are documented
     # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
       - netbase

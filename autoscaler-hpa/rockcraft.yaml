@@ -1,4 +1,4 @@
-# Based on ko image: https://github.com/knative/serving/tree/knative-v1.12.4/cmd/autoscaler-hpa
+# Based on ko image: https://github.com/knative/serving/tree/knative-v1.16.0/cmd/autoscaler-hpa
 name: knative-serving-autoscaler-hpa
 summary: "Horizontal Pod Autoscaler for Knative Serving"
 description: "The Knative Autoscaler-HPA provides horizontal pod scaling for Knative services using Kubernetes' Horizontal Pod Autoscaler (HPA). It ensures optimal scaling based on CPU and memory utilization."
@@ -10,8 +10,7 @@ platforms:
 run-user: _daemon_
 
 environment:
-  # Required due to the go codebase relying on the OS Env being set
-  # See https://github.com/knative/operator/blob/knative-v1.12.4/pkg/reconciler/common/releases.go#L36
+  # env is set in upstream image, can be viewed with `docker inspect`
   KO_DATA_PATH: "/var/run/ko"
   # env identifies where to locate the SSL certificate file
   SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
@@ -38,9 +37,7 @@ parts:
     source-type: git
     source-tag: knative-v1.16.0
     overlay-packages:
-    # Install ca-certificates found in the base image
-    # reference: https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md?plain=1#L9.
-    # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
+    # Install ca-certificates found in the upstream image in /etc/ssl/certs 
       - ca-certificates
     build-snaps:
       - go/1.22/stable
@@ -49,10 +46,8 @@ parts:
       - GOOS: linux
     stage-packages:
     # Install packages existing in the base for the upstream image.
-    # Base image is set upstream in https://github.com/knative/operator/blob/knative-v1.12.4/.ko.yaml#L1.
     # Packages existing in the base image are documented
-    # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
-      - netbase
+    # in https://github.com/wolfi-dev/tools/blob/main/images/static/configs/alpine.apko.yaml#L3
       - tzdata
     override-build: |
       go mod download

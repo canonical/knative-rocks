@@ -11,8 +11,7 @@ platforms:
     amd64:
 
 environment:
-  # Required due to the go codebase relying on the OS Env being set
-  # See https://github.com/knative/operator/blob/knative-v1.16.0/pkg/reconciler/common/releases.go#L36
+  # env is set in upstream image, can be viewed with `docker inspect`
   KO_DATA_PATH: "/var/run/ko"
   # env identifies where to locate the SSL certificate file
   SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"

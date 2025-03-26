@@ -60,7 +60,7 @@ parts:
       # Build
       go build -a -o queue ./cmd/queue
 
-      # Copy the files from the ko-data directory to the install directory
+      # Create directory for `KO_DATA_PATH` env
       mkdir -p $CRAFT_PART_INSTALL/var/run/ko
 
       # Copy the go binary to the install directory

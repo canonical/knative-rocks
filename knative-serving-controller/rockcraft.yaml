@@ -57,6 +57,15 @@ parts:
       - netbase
       - tzdata
     override-build: |
+      # Patch ReadOnlyRootFilesystem in queue.go to create queue-proxy
+      # container with a writable file system.
+      # More details in https://github.com/canonical/knative-rocks/issues/44.
+      # Remove once pebble won't need to always write some state to disk
+      # https://github.com/canonical/pebble/issues/462.
+      sed -i \
+          's#ReadOnlyRootFilesystem:   ptr.Bool(true)#ReadOnlyRootFilesystem:   ptr.Bool(false)#' \
+          pkg/reconciler/revision/resources/queue.go
+
       go mod download
 
       # Build

@@ -37,7 +37,8 @@ parts:
     source-type: git
     source-tag: knative-v1.16.0
     overlay-packages:
-    # Install ca-certificates found in the upstream image in /etc/ssl/certs 
+    # Install ca-certificates found in the upstream image in /etc/ssl/certs
+    # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
       - ca-certificates
     build-snaps:
       - go/1.22/stable

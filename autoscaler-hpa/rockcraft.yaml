@@ -1,0 +1,65 @@
+# Based on ko image: https://github.com/knative/serving/tree/knative-v1.16.0/cmd/autoscaler-hpa
+name: knative-serving-autoscaler-hpa
+summary: "Horizontal Pod Autoscaler for Knative Serving"
+description: "The Knative Autoscaler-HPA provides horizontal pod scaling for Knative services using Kubernetes' Horizontal Pod Autoscaler (HPA). It ensures optimal scaling based on CPU and memory utilization."
+version: "1.16.0"
+license: Apache-2.0
+base: ubuntu@22.04
+platforms:
+    amd64:
+run-user: _daemon_
+
+environment:
+  # env is set in upstream image, can be viewed with `docker inspect`
+  KO_DATA_PATH: "/var/run/ko"
+  # env identifies where to locate the SSL certificate file
+  SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+
+services:
+  knative-serving-autoscaler-hpa:
+    override: replace
+    summary: "Knative Autoscaler-HPA service for managing horizontal pod scaling"
+    startup: enabled
+    command: "/ko-app/autoscaler-hpa"
+
+parts:
+  security-team-requirement:
+    plugin: nil
+    override-build: |
+      mkdir -p ${CRAFT_PART_INSTALL}/usr/share/rocks
+      (echo "# os-release" && cat /etc/os-release && echo "# dpkg-query" && \
+      dpkg-query --root=${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/ -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W) \
+      > ${CRAFT_PART_INSTALL}/usr/share/rocks/dpkg.query
+
+  autoscaler-hpa:
+    plugin: go
+    source: https://github.com/knative/serving
+    source-type: git
+    source-tag: knative-v1.16.0
+    overlay-packages:
+    # Install ca-certificates found in the upstream image in /etc/ssl/certs
+    # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
+      - ca-certificates
+    build-snaps:
+      - go/1.22/stable
+    build-environment:
+      - CGO_ENABLED: 0
+      - GOOS: linux
+    stage-packages:
+    # Install packages existing in the base for the upstream image.
+    # Base image is set upstream in https://github.com/knative/serving/blob/knative-v1.16.0/.ko.yaml#L2
+    # Packages existing in the base image are documented
+    # in https://github.com/wolfi-dev/tools/blob/main/images/static/configs/alpine.apko.yaml#L3
+      - tzdata
+    override-build: |
+      go mod download
+
+      # Build
+      go build -a -o autoscaler-hpa ./cmd/autoscaler-hpa
+
+      # Create directory for required $KO_DATA_PATH
+      mkdir -p $CRAFT_PART_INSTALL/var/run/ko
+
+      # Copy the go binary to the install directory
+      mkdir $CRAFT_PART_INSTALL/ko-app
+      cp -r autoscaler-hpa $CRAFT_PART_INSTALL/ko-app/autoscaler-hpa

@@ -1,0 +1,68 @@
+# Based on ko image: https://github.com/knative/eventing/tree/knative-v1.16.1/cmd/broker/filter
+name: knative-eventing-mtchannel-broker
+summary: Knative Eventing Mtchannel-broker
+description: "Knative Eventing Mtchannel-broker"
+version: "1.16.1"
+license: Apache-2.0
+base: ubuntu@22.04
+run-user: _daemon_
+
+platforms:
+    amd64:
+
+environment:
+  # env is set in upstream image, can be viewed with `docker inspect`
+  KO_DATA_PATH: "/var/run/ko"
+  # env identifies where to locate the SSL certificate file
+  SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+
+services:
+  knative-eventing-mtchannel-broker:
+    override: replace
+    summary: "Knative Eventing Mtchannel Broker service"
+    startup: enabled
+    command: "/ko-app/mtchannel_broker"
+
+parts:
+  security-team-requirement:
+    plugin: nil
+    override-build: |
+      mkdir -p ${CRAFT_PART_INSTALL}/usr/share/rocks
+      (echo "# os-release" && cat /etc/os-release && echo "# dpkg-query" && \
+      dpkg-query --root=${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/ -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W) \
+      > ${CRAFT_PART_INSTALL}/usr/share/rocks/dpkg.query
+
+  mtchannel_broker:
+    plugin: go
+    source: https://github.com/knative/eventing
+    source-type: git
+    source-tag: knative-v1.16.1
+    overlay-packages:
+    # Install ca-certificates found in the base image
+    # reference: https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md?plain=1#L9.
+    # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
+      - ca-certificates
+    build-snaps:
+      - go/1.22/stable
+    build-environment:
+      - CGO_ENABLED: 0
+      - GOOS: linux
+    stage-packages:
+    # Install packages existing in the base for the upstream image.
+    # Base image is set upstream in https://github.com/knative/eventing/blob/knative-v1.16.1/.ko.yaml#L2.
+    # Packages existing in the base image are documented
+    # in https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md#image-contents.
+      - netbase
+      - tzdata
+    override-build: |
+      go mod download
+
+      # Build
+      go build -a -o mtchannel_broker ./cmd/mtchannel_broker
+
+      # Create directory for `KO_DATA_PATH` env
+      mkdir -p $CRAFT_PART_INSTALL/var/run/ko
+
+      # Copy the go binary to the install directory
+      mkdir $CRAFT_PART_INSTALL/ko-app
+      cp -r mtchannel_broker $CRAFT_PART_INSTALL/ko-app/mtchannel_broker

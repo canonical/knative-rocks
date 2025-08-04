@@ -3,4 +3,4 @@ integrations:
    
     replace-image:
       - file: charms/knative-eventing/src/default-custom-images.json
-        path: $["foo/bar"]
+        path: $["imc-dispatcher/dispatcher"]

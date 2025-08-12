@@ -3,4 +3,4 @@ integrations:
    
     replace-image:
       - file: charms/knative-serving/src/default-custom-images.json
-        path: activator
+        path: autoscaler

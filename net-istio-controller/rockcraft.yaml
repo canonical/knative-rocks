@@ -1,6 +1,7 @@
 # From (ko image): https://github.com/knative-extensions/net-istio/tree/knative-v1.16.0/cmd/controller
 # Currently based on gcr.io/knative-releases/knative.dev/net-istio/cmd/controller@sha256:e70bc675f97778da144157f125b3001124ba7a5903b85dab9e77776352fea1c7
 # See https://github.com/canonical/knative-operators/blob/main/tools/get-images.sh#L36-L42
+# trigger
 name: net-istio-controller
 base: ubuntu@22.04
 version: 1.16.0

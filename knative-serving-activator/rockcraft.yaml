@@ -1,4 +1,5 @@
 # Based on ko image: https://github.com/knative/serving/tree/knative-v1.16.0/cmd/activator
+# trigger
 name: knative-serving-activator
 summary: Knative Serving Activator
 description: "Knative Serving Activator"

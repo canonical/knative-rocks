@@ -1,0 +1,47 @@
+# Based on ko image: https://github.com/knative/eventing/tree/knative-v1.16.1/cmd/jobsink
+name: knative-eventing-job-sink
+base: ubuntu@24.04
+version: 1.16.1
+summary: An image for Knative's job-sink
+description: |
+  An image for Knative's job-sink
+license: Apache-2.0
+entrypoint-service: job-sink
+run-user: _daemon_
+
+platforms:
+  amd64:
+
+environment:
+  # Environment variables that are set in the base image
+  KO_DATA_PATH: "/var/run/ko"
+  SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+    
+services:
+  job-sink:
+    override: replace
+    command: "/ko-app/jobsink [ ]"
+    startup: enabled
+
+  parts:
+  job-sink:
+    plugin: go
+    source: https://github.com/knative/eventing.git
+    source-type: git
+    source-tag: knative-v1.16.1
+    source-subdir: cmd/jobsink
+    overlay-packages:
+      # Install in overlay instead of stage packages due to https://github.com/canonical/rockcraft/issues/334.
+      - ca-certificates
+    build-snaps:
+      - go/1.22/stable  # from https://github.com/knative/eventing/blob/knative-v1.16.1/go.mod#L3
+    build-environment:
+      - CGO_ENABLED: "0"
+      - GOOS: linux
+      # Change the default installation path of Go executables
+      - GOBIN: ${CRAFT_PART_INSTALL}/ko-app
+    stage-packages:
+      # Install the packages existing in the base for the upstream image
+      # Base upstream image defined at https://github.com/knative/eventing/blob/knative-v1.16.1/.ko.yaml#L2
+      - netbase
+      - tzdata

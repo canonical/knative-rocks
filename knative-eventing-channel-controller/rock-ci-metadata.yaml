@@ -3,4 +3,4 @@ integrations:
 
     replace-image:
       - file: charms/knative-eventing/src/default-custom-images.json
-        path: $["mt-broker-controller/mt-broker-controller"]
+        path: $["imc-controller/controller"]

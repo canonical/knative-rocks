@@ -1,0 +1,6 @@
+integrations:
+  - consumer-repository: https://github.com/canonical/knative-operators.git
+   
+    replace-image:
+      - file: charms/knative-serving/src/default-custom-images.json
+        path: $["net-istio-webhook/webhook"]

@@ -22,6 +22,7 @@ services:
     override: replace
     command: "/ko-app/migrate [ ]"
     startup: enabled
+    on-success: shutdown
 
 parts:
   security-team-requirement:
